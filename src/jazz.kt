@@ -9,15 +9,33 @@ class Note(val note: String) {
     return letterNames.contains(letterName) && accidentals.contains(accidental)
   }
 
+  fun transpose(halfSteps: Int) {}
 }
 
-/* Test class Note 
-val note = Note("A#")
-note.isValid()
-Note("A6").isValid()
-*/
+class Key(val key: String) {
+  fun isValid(): Boolean {
+    return Note(key).isValid()
+  }
+}
 
-data class Scales(val notes: List<String>, val key: String, )
+class Scale(val notes: List<Note>, key: Key) {
+  fun isValid(): Boolean {
+    return notes.map{it.isValid()}.all{ it }
+  }
+  
+  fun transpose(halfSteps: Int) {}
+}
+
+// Test class Note 
+//val note = Note("A#")
+//note.isValid()
+//Note("A6").isValid()
+
+//data class Scales(val notes: List<String>, val key: String, )
 
 
-arrayOf(1,2,3).contains(2)
+//arrayOf(1,2,3).contains(2)
+
+/*
+:load jazz.kt
+ */

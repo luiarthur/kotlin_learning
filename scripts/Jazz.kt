@@ -11,7 +11,7 @@ object Jazz {
       return letterNames.contains(letterName) && accidentals.contains(accidental)
     }
 
-    fun transpose(halfSteps: Int) { 
+    fun transpose(halfSteps: Int): Note { 
       TODO() 
     }
   }
@@ -25,16 +25,40 @@ object Jazz {
   }
 
 
+  // Chord class
+  class Chord(val notes: List<Note>, key: Key) {
+    fun isValid(): Boolean {
+      return notes.map{it.isValid()}.all{ it }
+    }
+
+    fun transpose(halfSteps: Int): Scale {
+      TODO()
+    }
+
+    fun circle(): List<Chord> {
+      TODO()
+    }
+  }
+
   // Scale class
   class Scale(val notes: List<Note>, key: Key) {
     fun isValid(): Boolean {
       return notes.map{it.isValid()}.all{ it }
     }
     
-    fun transpose(halfSteps: Int) {
+    fun transpose(halfSteps: Int): Scale {
+      TODO()
+    }
+
+    fun circle(): List<Scale> {
+      TODO()
+    }
+
+    fun blockChord(intervals: List<Int>): List<Chord> {
       TODO()
     }
   }
+
 }
 
 // Test class Note 

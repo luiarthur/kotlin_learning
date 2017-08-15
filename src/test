@@ -1,0 +1,6 @@
+#!/bin/bash
+
+#kotlinc -classpath Jazz.jar testJazz.kt -d testJazz.jar -include-runtime
+kotlinc *.kt -d testJazz.jar -include-runtime
+java -jar testJazz.jar
+rm -f testJazz.jar

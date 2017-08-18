@@ -44,7 +44,16 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     testCompile 'junit:junit:4.12'
+}
+
+test {
+	//we want display the following test events
+    testLogging {
+        //events "PASSED", "STARTED", "FAILED", "SKIPPED"
+        events "PASSED", "FAILED"
+    }
 }
 
 // to run:

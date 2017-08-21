@@ -9,8 +9,10 @@ buildscript{
   ext.kotlin_version = '1.1.4'
 
   repositories {
-      jcenter()
-      mavenCentral()
+      //jcenter()
+      //mavenCentral()
+      jcenter { url "http://jcenter.bintray.com/" }
+      maven { url 'http://repo1.maven.org/maven2' }
   }
 
   dependencies {
@@ -19,17 +21,21 @@ buildscript{
 }
 
 
-plugins {
-  id "org.jetbrains.kotlin.jvm" version "1.1.4"
-  //id "application"
-}
+//plugins {
+//  id "org.jetbrains.kotlin.jvm" version "1.1.4"
+//  //id "application"
+//}
+
+apply plugin: "org.jetbrains.kotlin.jvm"
 
 //mainClassName = "demo.MainKt"
 //mainClassName = "MainKt"
 
 repositories {
-  jcenter()
-  mavenCentral()
+  //jcenter()
+  //mavenCentral()
+  jcenter { url "http://jcenter.bintray.com/" }
+  maven { url 'http://repo1.maven.org/maven2' }
 }
 
 dependencies {

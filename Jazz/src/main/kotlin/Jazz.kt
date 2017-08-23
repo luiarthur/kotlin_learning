@@ -19,6 +19,11 @@ object Jazz {
       "C7", "C7#", "D7", "D7#", "E7", "F7", "F7#", "G7", "G7#", "A7", "A7#", "B7",
       "C8")
 
+  // Resolve accidentals
+  fun resolve(s: String): String {
+    TODO()
+  }
+
   // Note class
   class Note(val letter: Char, val octave: Int, val accidental: String="") {
     override fun toString(): String {
@@ -60,27 +65,30 @@ object Jazz {
 
 
     fun transpose(halfSteps: Int): Note { 
-      require(0 < halfSteps && halfSteps < 12) {
-        "halfSteps must be between 0 and 12 (exclusive)."
+      require(-12 <= halfSteps && halfSteps <= 12) {
+        "halfSteps must be between -12 and 12 (inclusive)."
       }
       return Note(pianoNotes[pianoNotes.indexOf(this.toEnharmonic().toString()) + halfSteps])
     }
   }
 
-  // SeqNote Class
+  // ListNotes Class
   abstract class ListNotes(open val notes: List<Note>) {
     fun isValid(): Boolean {
-      return notes.map{it.isValid()}.all{ it }
+      return notes.all{ it.isValid() }
     }
 
-    fun transpose(halfSteps: Int): List<Note> {
+    protected fun generalTranspose(halfSteps: Int): List<Note> { // reimplement in children
       return notes.map{ it.transpose(halfSteps) }
     }
 
-    fun circle(): List<String> {
+    protected fun generalCircle(direction: Int=4): List<Note> { // reimplement in children
       TODO()
     }
+
+    abstract fun transpose(halfSteps: Int): Any
   }
+
 
   // Key class
   class Key(val key: String) {
@@ -92,10 +100,21 @@ object Jazz {
 
   //// Chord class
   class Chord(override val notes: List<Note>, val key: Key) : ListNotes(notes) { 
+    override fun transpose(halfSteps: Int): Chord {
+      return Chord(generalTranspose(halfSteps), key)
+    }
+
+    fun circle(direction: Int): Chord {
+      return Chord(generalCircle(direction), key)
+    }
   }
 
   // Scale class
   class Scale(override val notes: List<Note>, val key: Key) : ListNotes(notes) {
+    override fun transpose(halfSteps: Int): Scale {
+      return Scale(generalTranspose(halfSteps), key)
+    }
+
     fun blockChord(intervals: List<Int>): List<Chord> {
       TODO()
     }

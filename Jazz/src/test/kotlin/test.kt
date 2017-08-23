@@ -17,7 +17,6 @@ class TestSource {
     }
 
     @Test fun `Test Jazz Note`() {
-      println("Hi")
       assert( Jazz.Note('A', 3, "#").isValid() )
       assert( Jazz.Note('A', 3, "#").toString() == "A3#" )
       assert( Jazz.Note('B', 3, "b").isValid() )
@@ -35,4 +34,19 @@ class TestSource {
       assert( Jazz.Note("A3#").isValid() )
     }
 
+    @Test fun `Test Chord`() {
+      val chord = Jazz.Chord(listOf(Jazz.Note("A3"), Jazz.Note("C4#"), Jazz.Note("G4"), Jazz.Note("C5")), Jazz.Key("Am") )
+      println(chord.notes)
+      println(chord.transpose(2).notes)
+      println(chord.transpose(1).notes)
+      println(chord.transpose(-2).notes)
+    }
+
+    @Test fun `Test Scale`() {
+      val scale = Jazz.Scale(listOf(Jazz.Note("A3"), Jazz.Note("B3"), Jazz.Note("C4"), Jazz.Note("D5"), Jazz.Note("E5")), Jazz.Key("Am") )
+      println(scale.notes)
+      println(scale.transpose(1).notes)
+      println(scale.transpose(2).notes)
+      println(scale.transpose(-2).notes)
+    }
 }

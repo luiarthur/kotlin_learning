@@ -1,12 +1,12 @@
 object Jazz {
 
-  val letterNames = listOf('A'..'G').flatten()
+  val letterNames = listOf('A'..'G').flatten().map{it.toString()}
   val octaves = listOf(1..7).flatten()
   val accidentals = listOf("#", "x", "b", "bb", "n", "")
 
   val lowestNote = "A0"
   val HighestNote = "C8"
-  val sharpableNotes = listOf('C', 'D', 'F', 'G', 'A')
+  val sharpableNotes = listOf("C", "D", "F", "G", "A")
 
   val pianoNotes = listOf(
       "A0", "A0#", "B0", 
@@ -25,14 +25,14 @@ object Jazz {
   }
 
   // Note class
-  class Note(val letter: Char, val octave: Int, val accidental: String="") {
+  class Note(val letter: String, val octave: Int, val accidental: String="") {
     override fun toString(): String {
-      return letter.toString() + octave + accidental
+      return letter + octave + accidental
     }
 
-    constructor(s: String) : this(s[0], s[1].toString().toInt(), s.drop(2))
+    constructor(s: String) : this(s[0].toString(), s[1].toString().toInt(), s.drop(2))
 
-    fun toEnharmonic(): Note? { // Note with sharp
+    fun standardize(): Note? { // Note with sharp
       val halfSteps = when (accidental) {
         "#"  ->  1
         "x"  ->  2
@@ -46,7 +46,7 @@ object Jazz {
 
       val note = if (currentIdx > -1 && 0 <= enharmonicIdx && enharmonicIdx < 88) {
         val enharmonic= pianoNotes[enharmonicIdx]
-        val eLetter = enharmonic[0]
+        val eLetter = enharmonic[0].toString()
         val eOctave = enharmonic[1].toString().toInt()
         val eAccidental = enharmonic.drop(2)
 
@@ -56,11 +56,35 @@ object Jazz {
       return note
     }
 
-    fun isValid(): Boolean {
-      return when (this.toEnharmonic()) {
-        null -> false
-        else -> true
+    override operator fun equals(that: Any?): Boolean = when {
+      that is Note -> this.standardize().toString() == that.standardize().toString()
+      else -> false
+    }
+
+    fun toSharp(): Note? {
+      TODO()
+    }
+
+    fun toFlat(): Note? {
+      TODO()
+    }
+
+    fun toEnharmonic(e: String): Note { // FIXME
+      // return enharmonic equivalent using `letter` in spelling
+      val candidates = accidentals.map{ acc -> 
+        val oct = when {
+          e == "B" && acc != "#" && acc != "x"  && letter == "C" -> octave - 1
+          e == "C" && acc != "b" && acc != "bb" && letter == "B" -> octave + 1
+          else -> octave
+        }
+        Note(e + oct.toString() + acc) 
       }
+      return candidates.filter{ it == this }.first()
+    }
+
+    fun isValid(): Boolean = when (this.standardize()) {
+      null -> false
+      else -> true
     }
 
 
@@ -68,12 +92,16 @@ object Jazz {
       require(-12 <= halfSteps && halfSteps <= 12) {
         "halfSteps must be between -12 and 12 (inclusive)."
       }
-      return Note(pianoNotes[pianoNotes.indexOf(this.toEnharmonic().toString()) + halfSteps])
+      return Note(pianoNotes[pianoNotes.indexOf(this.standardize().toString()) + halfSteps])
     }
   }
 
   // ListNotes Class
   abstract class ListNotes(open val notes: List<Note>) {
+    override fun toString(): String {
+      return notes.toString()
+    }
+
     fun isValid(): Boolean {
       return notes.all{ it.isValid() }
     }
@@ -118,6 +146,31 @@ object Jazz {
     fun blockChord(intervals: List<Int>): List<Chord> {
       TODO()
     }
+  }
+
+  // Generate Inonian scale
+  fun ionian(startNote: Note):Scale { // FIXME
+    val increments = listOf(2,2,1,2,2,2,1) // W, W, H, W, W, W, H
+
+    val idx = letterNames.indexOf(startNote.letter)
+    val letters = letterNames.drop(idx) + letterNames.take(idx) + startNote.letter
+    println(letters)
+
+    val scale = Array(8) { startNote }
+    println(scale[0])
+    for (i in scale.indices) {
+      when (i) {
+        0 -> scale[i] = startNote
+        else -> {
+          scale[i] = scale[i-1].transpose(increments[i-1]).toEnharmonic(letters[i])
+          println(scale[i])
+        }
+      }
+    }
+
+    //val scaleWithAccidentals = scale.toList().zip(letters){(s,l) -> s.toEnharmonic(l)}
+    //return Scale(scaleWithAccidentals, key=Key(startNote.letter))
+    return Scale(scale.toList(), key=Key(startNote.letter))
   }
 }
 

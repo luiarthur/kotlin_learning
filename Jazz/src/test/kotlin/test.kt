@@ -71,6 +71,8 @@ class TestSource {
       assert(Jazz.Note("B6#").toEnharmonic("B") == Jazz.Note("B6#"))
       assert(Jazz.Note("C6#").toEnharmonic("C") == Jazz.Note("C6#"))
       assert(Jazz.Note("C6#").toEnharmonic("D") == Jazz.Note("D6b"))
+      assert(Jazz.Note("B4#").toEnharmonic("C") == Jazz.Note("C5"))
+      assert(Jazz.Note("C5").toEnharmonic("B") == Jazz.Note("B4#"))
     }
 
     @Test fun `Test Ionian Generator`() {
@@ -81,5 +83,6 @@ class TestSource {
       println(Jazz.ionian( Jazz.Note("E4b") ))
       println(Jazz.ionian( Jazz.Note("C4#") ))
       println(Jazz.ionian( Jazz.Note("D4#") ))
+      println(Jazz.ionian( Jazz.Note("B3") ))
     }
 }

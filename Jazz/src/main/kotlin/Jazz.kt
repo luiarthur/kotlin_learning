@@ -2,7 +2,7 @@ object Jazz {
 
   val letterNames = listOf('A'..'G').flatten().map{it.toString()}
   val octaves = listOf(1..7).flatten()
-  val accidentals = listOf("#", "x", "b", "bb", "n", "")
+  val accidentals = listOf("#", "b", "x", "bb", "", "n")
 
   val lowestNote = "A0"
   val HighestNote = "C8"
@@ -73,8 +73,8 @@ object Jazz {
       // return enharmonic equivalent using `letter` in spelling
       val candidates = accidentals.map{ acc -> 
         val oct = when {
-          e == "B" && acc != "#" && acc != "x"  && letter == "C" -> octave - 1
-          e == "C" && acc != "b" && acc != "bb" && letter == "B" -> octave + 1
+          e == "B" && letter == "C" -> octave - 1
+          e == "C" && letter == "B" -> octave + 1
           else -> octave
         }
         Note(e + oct.toString() + acc) 
@@ -92,7 +92,8 @@ object Jazz {
       require(-12 <= halfSteps && halfSteps <= 12) {
         "halfSteps must be between -12 and 12 (inclusive)."
       }
-      return Note(pianoNotes[pianoNotes.indexOf(this.standardize().toString()) + halfSteps])
+      val idx = pianoNotes.indexOf(this.standardize().toString()) + halfSteps
+      return Note(pianoNotes[idx])
     }
   }
 
@@ -154,16 +155,13 @@ object Jazz {
 
     val idx = letterNames.indexOf(startNote.letter)
     val letters = letterNames.drop(idx) + letterNames.take(idx) + startNote.letter
-    println(letters)
 
     val scale = Array(8) { startNote }
-    println(scale[0])
     for (i in scale.indices) {
       when (i) {
         0 -> scale[i] = startNote
         else -> {
           scale[i] = scale[i-1].transpose(increments[i-1]).toEnharmonic(letters[i])
-          println(scale[i])
         }
       }
     }
@@ -171,6 +169,17 @@ object Jazz {
     //val scaleWithAccidentals = scale.toList().zip(letters){(s,l) -> s.toEnharmonic(l)}
     //return Scale(scaleWithAccidentals, key=Key(startNote.letter))
     return Scale(scale.toList(), key=Key(startNote.letter))
+  }
+
+  // Given a list of degrees (eg. listOf(1,2,3,4,5,6,6#,7,8), return the scale
+  fun flexScale(degrees: List<Note>, startNote: Note): Scale {
+    //val ion = ionian(startNote)
+    //return degrees.map{ degree -> 
+    //  val note = ion[(degree)[0].toString().toInt() - 1]
+    //  val acc = degree.drop(1)
+    //  ion[degree-1].toEnharmonic(note)
+    //}
+    TODO()
   }
 }
 

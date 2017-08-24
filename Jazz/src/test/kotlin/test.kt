@@ -1,6 +1,7 @@
 import kotlin.test.*
 import org.junit.Test
-import Jazz
+import org.junit.Ignore
+//import Jazz
 
 class TestSource {
     @Test fun `Stupid Test`() {
@@ -85,4 +86,31 @@ class TestSource {
       println(Jazz.ionian( Jazz.Note("D4#") ))
       println(Jazz.ionian( Jazz.Note("B3") ))
     }
+
+    @Test fun `Test Flexible Scale Generator`() {
+      val scaleA = Jazz.ionian( Jazz.Note("A4") )
+      println(scaleA.degree(Jazz.Degree(4)))
+      println(scaleA.degree(Jazz.Degree(4,"b")))
+      val degrees = listOf( Jazz.Degree(1), Jazz.Degree(2), Jazz.Degree(3), Jazz.Degree(4), 
+                            Jazz.Degree(5), Jazz.Degree(6,"b"), Jazz.Degree(6), Jazz.Degree(7), Jazz.Degree(8))
+      println(Jazz.flexScale(degrees, Jazz.Note("C",4)))
+      println(Jazz.flexScale(degrees, Jazz.Note("B",4)))
+      println(Jazz.flexScale(degrees, Jazz.Note("D",4)))
+      println(Jazz.flexScale(degrees, Jazz.Note("D",4,"#")))
+      println(Jazz.flexScale(degrees, Jazz.Note("E",4,"b")))
+    }
+
+    @Test fun `Test Block Chord Generator`() {
+      val degrees = listOf( Jazz.Degree(1), Jazz.Degree(2), Jazz.Degree(3), Jazz.Degree(4), 
+                            Jazz.Degree(5), Jazz.Degree(6,"b"), Jazz.Degree(6), Jazz.Degree(7), Jazz.Degree(8))
+      val c6dim = Jazz.flexScale(degrees, Jazz.Note("C",4))
+      println(c6dim)
+
+      println()
+      println("c6dim blocked chord scale")
+      c6dim.blockChord(listOf(1,3,5,7)).forEach{println(it)}
+      println(c6dim.increments)
+    }
+
+
 }

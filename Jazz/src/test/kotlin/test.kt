@@ -112,5 +112,18 @@ class TestSource {
       println(c6dim.increments)
     }
 
+    @Test fun `Test Bebop Generator`() {
+      val degrees = listOf( Jazz.Degree(1), Jazz.Degree(2), Jazz.Degree(3), 
+                            Jazz.Degree(4), Jazz.Degree(5), Jazz.Degree(6), 
+                            Jazz.Degree(7,"b"), Jazz.Degree(7), Jazz.Degree(8))
+      val cbebop = Jazz.flexScale(degrees, Jazz.Note("C",4))
+      println(cbebop)
+
+      println()
+      println("c6dim blocked chord scale")
+      cbebop.blockChord(listOf(1,3,5,7)).forEach{println(it)}
+      println(cbebop.increments)
+    }
+
 
 }

@@ -10,11 +10,11 @@ abstract class ListNotes(open val notes: List<Note>) {
     return notes.all{ it.isValid() }
   }
 
-  protected fun generalTranspose(halfSteps: Int): List<Note> { // reimplement in children
+  protected fun generalTranspose(halfSteps: Int): List<Note> {
     return notes.map{ it.transpose(halfSteps) }
   }
 
-  protected fun generalCircle(direction: Int=4): List<Note> { // reimplement in children
+  protected fun generalCircle(direction: Int=4): List<Note> {
     TODO()
   }
 

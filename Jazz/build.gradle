@@ -5,6 +5,7 @@
 // user guide available at https://docs.gradle.org/4.1/userguide/java_library_plugin.html
 // 
 
+// BUILD REGULAR KOTLIN
 buildscript{
   ext.kotlin_version = '1.1.4'
 
@@ -49,4 +50,56 @@ test {
         events "PASSED", "FAILED", "standard_out"
     }
 }
+
+// build: gradle tset --continuous
+//////////////////////////////////////////////////////////////////////////
+
+
+// BUILD TO JS
+//group 'org.example'
+//version '1.0-SNAPSHOT'
+//
+//buildscript {
+//    ext.kotlin_version = '1.1.4'
+//    repositories {
+//        mavenCentral()
+//    }
+//    dependencies {
+//        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+//    }
+//}
+//
+//apply plugin: 'kotlin2js'
+//
+//repositories {
+//    mavenCentral()
+//}
+//
+//dependencies {
+//    compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
+//}
+//
+//build.doLast {
+//    configurations.compile.each { File file ->
+//        copy {
+//            includeEmptyDirs = false
+//
+//            from zipTree(file.absolutePath)
+//            into "${projectDir}/web"
+//            include { fileTreeElement ->
+//                def path = fileTreeElement.path
+//                path.endsWith(".js") && (path.startsWith("META-INF/resources/") || !path.startsWith("META-INF/"))
+//            }
+//        }
+//    }
+//}
+//
+//// This doesn't seem to work...
+////compileKotlin2Js {
+////    kotlinOptions.outputFile = "${projectDir}/web/Jazz.js"
+////    kotlinOptions.moduleKind = "amd"
+////    kotlinOptions.sourceMap = true
+////}
+//
+//// build with: gradle clean build -x test
 

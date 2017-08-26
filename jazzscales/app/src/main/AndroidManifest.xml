@@ -18,4 +18,10 @@
         </activity>
     </application>
 
+    <!-- Arthur (jazzscale): For drawing GL graphics-->
+    <!--uses-feature android:glEsVersion="0x00020000" android:required="true" /-->
+
+    <!-- Arthur (jazzscale): For drawing HTML graphics-->
+    <uses-permission android:name="android.permission.INTERNET" />
+
 </manifest>

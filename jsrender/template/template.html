@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/syntax.css">
+    <script src="/js/abcjs_basic_3.0-min.js"></script>
+</head>
+
+
+<body>
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <p align="right" style="margin: 0; padding: 0;">11 Feb, 2017</p>
+
+              <h1> Fux </h1>
+
+				<hr />
+
+<h4 id="direct-motion">Direct Motion</h4>
+
+<div id="music2"></div>
+<script type="text/javascript">
+var music = `
+L:1/1
+[CE][DF][EG] | [EG][DF][CE] | [EG][B,D] |
+`;
+ABCJS.renderAbc('music2', music);
+</script>
+
+<hr />
+
+<h4 id="contrary-motion">Contrary Motion</h4>
+
+<div id="music3"></div>
+<script type="text/javascript">
+var music = `
+L:1/1
+[CE][_B,F] | [a,,E] | [CE][B,G] | [A,A] [CE] |
+`;
+ABCJS.renderAbc('music3', music);
+</script>
+
+<hr />
+
+<h4 id="figure-5">Figure 5</h4>
+
+<p><strong>Take-aways:</strong></p>
+
+<ul>
+  <li>Cantus firmus in the bass line; counterpoint in soprano.</li>
+  <li>must begin and end on perfect consonance.</li>
+</ul>
+
+<div id="music4"></div>
+<script type="text/javascript">
+var music = `
+L:1/1
+V:1 name=counterpoint cl=treble
+V:2 name=cantus-firmus cl=alto
+[V:1] A|A|G|A|B|c|c|B|d|^c|d||
+[V:2] D|F|E|D|G|F|A|F|F|E|A||
+`;
+ABCJS.renderAbc('music4', music);
+</script>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<hr>
+
+
+<script src="/js/jquery.min.js "></script>
+<script src="/js/bootstrap.min.js "></script>
+
+
+    
+
+
+</body>
+
+</html>

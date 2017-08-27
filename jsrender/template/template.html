@@ -3,7 +3,6 @@
 
 <head>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/syntax.css">
     <script src="/js/abcjs_basic_3.0-min.js"></script>
 </head>
 
@@ -22,6 +21,28 @@
               <h1> Fux </h1>
 
 				<hr />
+
+<h4>Cooleys</h4>
+<div id="notation"></div>
+<script type="text/javascript">
+	var chorus = '%%staffwidth 500\nX: 1\nT: Chorus\nV: T1 clef=treble name="Soprano"\nV: T2 clef=treble name="Alto"\nV: B1 clef=bass name="Tenor"\nV: B2 clef=bass name="Bass"\nL:1/8\nK:G\nP:First Part\n[V: T1]"C"ed"Am"ed "F"cd"G7"gf |\n[V: T2]GGAA- A2BB |\n[V: B1]C3D- DF,3 |\n[V: B2]C,2A,,2 F,,2G,,2 |';
+	var bigNotes = "X:1\nM: 4/4\nL: 1/8\nK: Emin\n|:D2|EB{c}BA B2 EB|\n";
+ABCJS.renderAbc('notation', chorus);
+</script>
+
+
+<h4>TEST</h4>
+<div style="width:300px"> <div id="music1"></div> </div>
+<script type="text/javascript">
+var music =`
+L:1/1
+%%staffwidth 300
+[CE][DF][EG][EG][DF][CE]| [CE][DF][EG][EG][DF][CE] |
+`;
+ABCJS.renderAbc('music1', music);
+</script>
+<hr />
+
 
 <h4 id="direct-motion">Direct Motion</h4>
 

@@ -1,138 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
 
 <head>
-    <link rel="stylesheet" href="file:///android_asset/css/bootstrap.min.css">
-    <link rel="stylesheet" href="file:///android_asset/css/syntax.css">
-    <script src="file:///android_asset/js/abcjs_basic_3.0-min.js"></script>
-    <script src="file:///android_asset/js/kotlin.js"></script>
-    <script src="file:///android_asset/js/jazz.js"></script>
-    <style>
-      .abcjs-inline-midi {
-        max-width: 400px;
-      }
-    </style>
+  <script src='file:///android_asset/js/abcjs_basic_3.0-min.js'></script>
 </head>
-
 
 <body>
 
-
-
-<!-- Post Content -->
-<article>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <p align="right" style="margin: 0; padding: 0;">11 Feb, 2017</p>
-
-              <h1> Fux </h1>
-
-				<hr />
-
-
-<h4 id="Test-kotlin.js">Test Kotlin.js</h4>
-
-<div id="music" class="col-1">
-  <p>
-  bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla 
-  bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla 
-  bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla 
-  bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla 
-  bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla 
-  bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla 
-  bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla 
-  </p>
-
-  <div id="music1" class=""></div>
-  <script type="text/javascript">
-
-  //var degrees = [ Jazz$Degree(1),     Jazz$Degree(2), Jazz$Degree(3), 
-  //                Jazz$Degree(4),     Jazz$Degree(5), Jazz$Degree(6), 
-  //                Jazz$Degree(7,"b"), Jazz$Degree(7), Jazz$Degree(8) ]
-  //val cbebop = Jazz.flexScale(degrees, Jazz.Note("C",4))
-  //println(cbebop)
-  //
-  //println()
-  //println("c6dim blocked chord scale")
-  //cbebop.blockChord(listOf(1,3,5,7)).forEach{println(it)}
-  //println(cbebop.increments)
-
-  // NEED THIS TO FIT IN SCREEN!!!!
+  <h4>Test abc.js Rendering</h4>
+  <div id='music' class=''></div>
+  <script type='text/javascript'>
   var music = `
+  %%staffwidth 400
   L:1/1
   [CE][DF][EG] [EG][DF][CE] [EG][B,D][CE] [DF][EG][EG] |
   `;
-  ABCJS.renderAbc('music1', music);
+  ABCJS.renderAbc('music', music);
   </script>
-</div>
-
-<hr />
-
-
-<h4 id="direct-motion">Direct Motion</h4>
-
-<div id="music2"></div>
-<script type="text/javascript">
-var music = `
-L:1/1
-[C'E][DF][EG] | [EG][DF][CE] | [EG][B,D] |
-`;
-ABCJS.renderAbc('music2', music);
-</script>
-
-<hr />
-
-<h4 id="contrary-motion">Contrary Motion</h4>
-
-<div id="music3"></div>
-<script type="text/javascript">
-var music = `
-L:1/1
-[CE][_B,F] | [a,,E] | [CE][B,G] | [A,A] [CE] |
-`;
-ABCJS.renderAbc('music3', music);
-</script>
-
-<hr />
-
-<h4 id="figure-5">Figure 5</h4>
-
-<p><strong>Take-aways:</strong></p>
-
-<ul>
-  <li>Cantus firmus in the bass line; counterpoint in soprano.</li>
-  <li>must begin and end on perfect consonance.</li>
-</ul>
-
-<div id="music4"></div>
-<script type="text/javascript">
-var music = `
-L:1/1
-V:1 name=counterpoint cl=treble
-V:2 name=cantus-firmus cl=alto
-[V:1] A|A|G|A|B|c|c|B|d|^c|d||
-[V:2] D|F|E|D|G|F|A|F|F|E|A||
-`;
-ABCJS.renderAbc('music4', music);
-</script>
-
-
-            </div>
-        </div>
-    </div>
-</article>
-
-<hr>
-
-
-<script src="file:///android_asset/js/jquery.min.js "></script>
-<script src="file:///android_asset/js/bootstrap.min.js "></script>
-
-
-    
-
 
 </body>
-
 </html>

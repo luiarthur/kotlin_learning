@@ -10,7 +10,7 @@
     <WebView
         android:id="@+id/webViewScore"
         android:layout_width="600dp"
-        android:layout_height="200dp"
+        android:layout_height="250dp"
         android:layout_marginTop="10dp"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="50dp" />

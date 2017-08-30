@@ -16,6 +16,10 @@ object Jazz{
 
 @ScalaJSDefined @JSExportTopLevel("Bob")
 class Bob(val x:Int, val y:js.Array[Int]) extends js.Object {
+  override def toString() = {
+    s"x: ${x.toString};  y: [${y.toString}]"
+  }
+
   def sum() = y.sum + x
 }
 

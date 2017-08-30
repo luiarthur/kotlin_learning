@@ -12,3 +12,4 @@ Jazz.inPianoNotes('A#')
 var bob = new Bob(1, [1,2,3])
 bob.sum()
 
+bob.toString()

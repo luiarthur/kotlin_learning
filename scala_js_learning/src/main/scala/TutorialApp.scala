@@ -1,14 +1,14 @@
-import scala.scalajs.js.JSApp
+import scala.scalajs.js.annotation._
+import scala.scalajs.js
 
-object TutorialApp extends JSApp {
-    val pianoNotes = List("A", "B", "C", "D", "E", "F", "G")
+@JSExportTopLevel("jazz")
+object jazz{
+    @JSExport
+    val pianoNotes = 
+      js.Array("A", "B", "C", "D", "E", "F", "G")
 
-    def inPianoNotes(note: String) {
+    @JSExport
+    def inPianoNotes(note: String):Boolean = {
       pianoNotes.contains(note)
     }
-
-
-  def main() {
-    println("My first scala.js app")
-  }
 }

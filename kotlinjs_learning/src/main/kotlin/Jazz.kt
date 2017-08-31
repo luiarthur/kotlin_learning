@@ -6,7 +6,12 @@ fun inPianoNotes(s: String): Boolean {
   return pianoNotes.contains(s)
 }
 
-//@JsName("Bob")
-//class Bob(val x:Int, val y:Array[Int]) {
-//  fun sum() = x + y.sum()
-//}
+@JsName("Bob")
+class Bob(val x:Int, val y:Array<Int>) {
+  override fun toString(): String {
+    return "x: $x,  y: [$y]"
+  }
+
+  fun sum():Int = x + y.sum()
+}
+

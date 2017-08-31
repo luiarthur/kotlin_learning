@@ -8,4 +8,10 @@ load('web/kotlin.js')
 
 
 Jazz.pianoNotes
-Jazz.inPianoNotes("A")
+assert(Jazz.inPianoNotes("A"))
+assert(!Jazz.inPianoNotes("#A"))
+
+var bob = new Jazz.Bob(1, [1,2,3])
+assert(bob.sum() == 7)
+
+bob.toString()

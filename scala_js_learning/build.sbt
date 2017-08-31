@@ -7,7 +7,7 @@ scalaVersion := "2.11.8"
 enablePlugins(ScalaJSPlugin)
 
 // This is an application with a main method
-//scalaJSUseMainModuleInitializer := true
+scalaJSUseMainModuleInitializer := true
 
 libraryDependencies ++= Seq(
   "org.scala-js" %%% "scalajs-dom" % "0.9.1",

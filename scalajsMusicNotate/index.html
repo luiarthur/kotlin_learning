@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="./target/scala-2.11/scalajsmusicnotate-jsdeps.js"></script>
+    <script type="text/javascript" src="./target/scala-2.11/scalajsmusicnotate-fastopt.js"></script>
+  </head>
+
+  <body>
+  <div id="music"></div>
+  <script>
+  var music = `
+  L:1/1
+  A B C |
+  `
+  ABCJS.renderAbc('music', music)
+  </script>
+  </body>
+
+</html>

@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // Enable JavaScript calling from html files
-        webViewScore.settings.javaScriptEnabled = true
+        wvScore.settings.javaScriptEnabled = true
 
         // Method 1
         //val summary = "<html><body>You scored <b>192</b> points.</body></html>"
@@ -32,15 +32,15 @@ class MainActivity : AppCompatActivity() {
         //webview.loadData(html, "text/html", null)
 
         // Method 3
-        webViewScore.webViewClient = WebViewClient() // opens in activity, instead of new window
-        webViewScore.loadUrl(url)
+        wvScore.webViewClient = WebViewClient() // opens in activity, instead of new window
+        wvScore.loadUrl(url)
     }
 
     fun renderMusic(music:String) {
         // sharps: '^' preceding note
         // flats:  '_' preceding note
-        webViewScore.evaluateJavascript( "var music = `%%staffwidth $musicStaffWidth\n $music`", null)
-        webViewScore.evaluateJavascript("ABCJS.renderAbc('music', music)", null)
+        wvScore.evaluateJavascript( "var music = `%%staffwidth $musicStaffWidth\n $music`", null)
+        wvScore.evaluateJavascript("ABCJS.renderAbc('music', music)", null)
     }
 
     fun setStaffWidth(staffWidth: Int) {
@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
           $CmajDim6
         """)
 
-        textView.text = "Here's new music!"
+        //textView.text = "Here's new music!"
     }
 }
 

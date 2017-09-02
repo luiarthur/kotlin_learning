@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
     val url = "file:///android_asset/html/template.html"
     private var musicStaffWidth = 400
 
-    val collections = assets.open("jazz/collections.html")//.bufferedReader().use { it.readText() }.replace("\n","")
+    //val collections = assets.open("jazz/collections.html")//.bufferedReader().use { it.readText() }.replace("\n","")
     //private val scales = JazzXmlParser.getAllTags(collections, "scale").map{JazzXmlParser.Xml(it)}
     //private val Cdim6 = scales.filter{it.name=="Cdim6"}?.first()?.value
 

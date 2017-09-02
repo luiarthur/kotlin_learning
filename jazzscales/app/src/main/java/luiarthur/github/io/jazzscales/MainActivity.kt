@@ -1,18 +1,25 @@
 package luiarthur.github.io.jazzscales
 
+import android.content.res.AssetManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.TextView
+import android.widget.PopupMenu
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.IOException
+import java.io.InputStream
 
 
 class MainActivity : AppCompatActivity() {
 
     val url = "file:///android_asset/html/template.html"
     private var musicStaffWidth = 400
+
+    val collections = assets.open("jazz/collections.html")//.bufferedReader().use { it.readText() }.replace("\n","")
+    //private val scales = JazzXmlParser.getAllTags(collections, "scale").map{JazzXmlParser.Xml(it)}
+    //private val Cdim6 = scales.filter{it.name=="Cdim6"}?.first()?.value
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,13 +32,7 @@ class MainActivity : AppCompatActivity() {
         //val summary = "<html><body>You scored <b>192</b> points.</body></html>"
         //webview.loadData(summary, "text/html", null)
 
-        // Method 2 (can't display js?)
-        // Load url: This file resides in app/src/assets/html/template.html.
-        // (Notice the "s" in assets)
-        //val html:String = assets.open("html/template.html").bufferedReader().use { it.readText() }.replace("\n","")
-        //webview.loadData(html, "text/html", null)
-
-        // Method 3
+        // Method 2
         wvScore.webViewClient = WebViewClient() // opens in activity, instead of new window
         wvScore.loadUrl(url)
     }
@@ -47,7 +48,8 @@ class MainActivity : AppCompatActivity() {
         musicStaffWidth = staffWidth
     }
 
-    val CmajDim6 = "CDEFG^GABc"
+
+
 
     fun transpose(music: String): String{
         // music must be in key of C
@@ -63,13 +65,25 @@ class MainActivity : AppCompatActivity() {
         //    [V:1 clef=treble] [DG][FC][E^A] |
         //    [V:2 clef=bass]   [E,B,][D,A,][C,G,] |
         //""")
+
         renderMusic("""
           L:1/1
           K:C
-          $CmajDim6
+          ABC
         """)
 
-        //textView.text = "Here's new music!"
+        //listAssetFiles("jazz")
     }
+
+    fun expandLists(v:View) {
+        val popup = PopupMenu(this, v)
+        popup.inflate(R.menu.popup_menu)
+        popup.show()
+    }
+
+    //fun doSomething(v: View) {
+    //   TODO()
+    //}
 }
+
 

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- predefined scales-->
+    <scale name="Cdim6">CDEFG^GABc</scale>
+    <scale name="C">CDEFGABc</scale>
+
+    <!-- predefined chords-->
+    <chord name="C">[EGBD]</chord>
+
+    <!-- predefined custom patterns-->
+    <custom name="custom1">[C E] D</custom>
+</resources>

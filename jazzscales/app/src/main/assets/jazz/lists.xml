@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Predefined Favorites -->
+    <list name="Favorites">@scale/Cdim6</list>
+    <list name="Favorites">@chord/C</list>
+
+    <!-- Predefined Routines -->
+    <list name="Routines">@scale/C</list>
+    <list name="Routines">@scale/custom1</list>
+</resources>

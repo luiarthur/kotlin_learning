@@ -1,5 +1,6 @@
 package luiarthur.github.io.jazzscales
 
+import android.content.Context
 import android.content.res.AssetManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -8,9 +9,11 @@ import android.view.View
 import android.webkit.WebViewClient
 import android.widget.PopupMenu
 import kotlinx.android.synthetic.main.activity_main.*
-import java.io.ByteArrayOutputStream
-import java.io.IOException
-import java.io.InputStream
+import android.content.Context.MODE_PRIVATE
+import java.io.*
+import android.R.attr.path
+
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -40,8 +43,15 @@ class MainActivity : AppCompatActivity() {
         wvScore.loadUrl(url)
 
         // Initialize jazz collections and lists
-        collections = readTxt("jazz/collections.xml")
-        lists = readTxt("jazz/lists.xml")
+        collections = readResource("jazz/collections.xml")
+        lists = readResource("jazz/lists.xml")
+
+        Log.d("Bla", filesDir.toString())
+
+        // READ / WRITE to Internal Storage WORKS!!!
+        //val tmp:String = readResource("jazz/collections.xml")
+        //writeToInternalStorage("jazzScalesCollections.xml",tmp)
+        //collections = readFromInternalStorage("jazzScalesCollections.xml")
     }
 
     fun renderMusic(music: String) {
@@ -91,7 +101,7 @@ class MainActivity : AppCompatActivity() {
     //}
 
     // read text file relative to assets dir
-    private fun readTxt(path: String):String {
+    private fun readResource(path: String):String {
         val ins = assets.open(path)
         val baos = ByteArrayOutputStream()
         var i: Int
@@ -107,6 +117,26 @@ class MainActivity : AppCompatActivity() {
         }
 
         return baos.toString()
+    }
+
+    fun writeToInternalStorage(filename:String, text:String) {
+        val outputStream = openFileOutput(filename, Context.MODE_PRIVATE)
+        outputStream.write(text.toByteArray())
+        outputStream.close()
+    }
+
+    fun readFromInternalStorage(filename:String):String {
+        val fin = openFileInput(filename)
+
+        var c = fin.read()
+        var s = ""
+        while (c > -1) {
+            c = fin.read()
+            s += Character.toString(c.toChar())
+        }
+        fin.close()
+
+        return s
     }
 }
 

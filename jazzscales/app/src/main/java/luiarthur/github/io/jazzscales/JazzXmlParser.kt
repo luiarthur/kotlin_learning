@@ -2,6 +2,8 @@ package luiarthur.github.io.jazzscales
 
 import kotlin.text.Regex
 
+// TODO: REFACTOR using JAXB (ships with Java).
+//       see: http://techgarage.io/index.php/2017/01/07/jaxb-with-kotlin/
 object JazzXmlParser {
     class Xml(val xml: String) {
         override fun toString(): String = xml

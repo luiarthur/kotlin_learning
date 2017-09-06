@@ -5,19 +5,22 @@ import android.content.res.AssetManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.webkit.WebViewClient
 import android.widget.PopupMenu
 import kotlinx.android.synthetic.main.activity_main.*
-import android.content.Context.MODE_PRIVATE
 import java.io.*
-import android.R.attr.path
+import java.nio.file.Files.delete
+
+
 
 
 
 
 class MainActivity : AppCompatActivity() {
 
+    private var currentMenu: String = ""
     val url = "file:///android_asset/html/template.html"
     private var musicStaffWidth = 400
     private var collections: String = ""
@@ -90,11 +93,6 @@ class MainActivity : AppCompatActivity() {
         """)
     }
 
-    fun expandLists(v:View) {
-        val popup = PopupMenu(this, v)
-        popup.inflate(R.menu.popup_menu)
-        popup.show()
-    }
 
     //fun doSomething(v: View) {
     //   TODO()
@@ -119,13 +117,13 @@ class MainActivity : AppCompatActivity() {
         return baos.toString()
     }
 
-    fun writeToInternalStorage(filename:String, text:String) {
+    private fun writeToInternalStorage(filename:String, text:String) {
         val outputStream = openFileOutput(filename, Context.MODE_PRIVATE)
         outputStream.write(text.toByteArray())
         outputStream.close()
     }
 
-    fun readFromInternalStorage(filename:String):String {
+    private fun readFromInternalStorage(filename:String):String {
         val fin = openFileInput(filename)
 
         var c = fin.read()
@@ -138,6 +136,57 @@ class MainActivity : AppCompatActivity() {
 
         return s
     }
+
+    fun expandLists(v:View) {
+        currentMenu = "lists"
+        val popup = PopupMenu(this, v)
+        popup.inflate(R.menu.popup_menu)
+        popup.show()
+    }
+
+    fun expandCollections(v:View) {
+        currentMenu = "collections"
+        val popup = PopupMenu(this, v)
+        popup.inflate(R.menu.popup_menu)
+        popup.show()
+    }
+
+    fun clickedSelect(item: MenuItem) {
+        Log.d("Select is clicked!", currentMenu)
+    }
+    fun clickedEdit(item: MenuItem) {
+        Log.d("Edit is clicked!", currentMenu)
+    }
+    fun clickedAdd(item: MenuItem) {
+        Log.d("Add is clicked!", currentMenu)
+    }
+    fun clickedRemove(item: MenuItem) {
+        Log.d("Remove is clicked!", currentMenu)
+    }
+    // FIXME
+    // See: https://developer.android.com/guide/topics/ui/menus.html
+    //fun clickedMenuItem(item: MenuItem): Boolean {
+    //    when (item.itemId) {
+    //        R.id.Select -> {
+    //            Log.d("Select is clicked!", currentMenu)
+    //            return true
+    //        }
+    //        R.id.Remove -> {
+    //            Log.d("Remove is clicked!", currentMenu)
+    //            return true
+    //        }
+    //        R.id.Edit-> {
+    //            Log.d("Edit is clicked!", currentMenu)
+    //            return true
+    //        }
+    //        R.id.Add -> {
+    //            Log.d("Add is clicked!", currentMenu)
+    //            return true
+    //        }
+    //        else -> return false // shouldn't ever happen
+    //    }
+    //}
+
 }
 
 

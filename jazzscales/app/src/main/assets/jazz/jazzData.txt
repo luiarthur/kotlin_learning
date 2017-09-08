@@ -1,0 +1,18 @@
+### predefined scales ###
+type:scale; name:Cdim6; music:CDEFG^GABc; list:favorites,routines;
+type:scale; name:C; music:CDEFGABc; list:routines;
+
+### predefined chords ###
+type:chord; name:C; music:[EGBD]; list:favorites;
+
+### predefined custom patterns ###
+type:custom; name:custom1; music:[C E] D; list:none;
+
+type:custom;
+name:custom1;
+music:[C E]
+FGA;
+list:none;
+
+### user-define items ###
+

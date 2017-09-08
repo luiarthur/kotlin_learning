@@ -152,6 +152,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun clickedSelect(item: MenuItem) {
+        //TODO:
+        // if currentMenu == lists, list what's in the lists
+        // else, list what's in the collections
         Log.d("Select is clicked!", currentMenu)
     }
     fun clickedEdit(item: MenuItem) {

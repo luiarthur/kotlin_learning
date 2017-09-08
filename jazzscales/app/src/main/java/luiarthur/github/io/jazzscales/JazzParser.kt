@@ -12,12 +12,12 @@ data class JazzData(
   }
 }
 
-class Parser(val text: String) {
+class JazzParser(val text: String) {
   override fun toString(): String {
     return text
   }
 
-  val re = Regex("type\\s*:\\s*\\w+\\s*;\\s*name\\s*:\\s*\\w+\\s*;\\s*list\\s*:(\\s*\\w+\\s*,\\s*)*\\w+\\s*;\\s*music\\s*:\\s*\\{[^\\}]+};")
+  val re = Regex("type\\s*:\\s*\\w+\\s*;\\s*name\\s*:\\s*\\w+\\s*;\\s*list\\s*:(\\s*\\w+\\s*,\\s*)*\\w+\\s*;\\s*music\\s*:\\s*\\{[^\\}]+\\};")
 
   private fun lineToJazzData(line: String): JazzData {
     val tnlm = line.split(";").map{it.split(":").last().trim()}
@@ -36,16 +36,16 @@ class Parser(val text: String) {
     return jazzData.filter{ it.type == type }
   }
 
-  fun addElement(type:String, name: String, list: List<String>, music: String): Parser {
+  fun addElement(type:String, name: String, list: List<String>, music: String): JazzParser {
     require(type in listOf("scale","chord","custom"))
-    return Parser(text + "\n" + JazzData(type,name,list,music).toString())
+    return JazzParser(text + "\n" + JazzData(type,name,list,music).toString())
   }
 
-  fun rmElement(name: String, music: String, list: String): Parser {
+  fun rmElement(name: String, music: String, list: String): JazzParser {
     TODO()
   }
 
-  fun editElement(name: String, music: String, list: String): Parser {
+  fun editElement(name: String, music: String, list: String): JazzParser {
     TODO()
   }
 }
@@ -73,7 +73,7 @@ type:custom; name:custom1; list:none; music:{
 ### user-define items ###
 """
 
-val p = Parser(text)
+val p = JazzParser(text)
 val j = p.toJazzData()
 j.forEach{println(it)}
 

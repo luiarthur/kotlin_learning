@@ -8,27 +8,26 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.webkit.WebViewClient
+import android.widget.Button
 import android.widget.PopupMenu
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.*
 import java.nio.file.Files.delete
-
-
-
-
+import android.widget.LinearLayout
+import android.view.ViewGroup
+import android.widget.TextView
+import android.view.LayoutInflater
+import kotlinx.android.synthetic.main.options_choose.*
+import kotlinx.android.synthetic.main.options_main.*
 
 
 class MainActivity : AppCompatActivity() {
 
-    private var currentMenu: String = ""
-    val url = "file:///android_asset/html/template.html"
+    private val url = "file:///android_asset/html/template.html"
     private var musicStaffWidth = 400
-    private var collections: String = ""
-    private var lists: String = ""
 
-    //val collections = assets.open("jazz/collections.html")//.bufferedReader().use { it.readText() }.replace("\n","")
-    //private val scales = JazzXmlParser.getAllTags(collections, "scale").map{JazzXmlParser.Xml(it)}
-    //private val Cdim6 = scales.filter{it.name=="Cdim6"}?.first()?.value
+    private lateinit var currentMenu: String
+    private lateinit var jazzParser: JazzParser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,15 +45,24 @@ class MainActivity : AppCompatActivity() {
         wvScore.loadUrl(url)
 
         // Initialize jazz collections and lists
-        collections = readResource("jazz/collections.xml")
-        lists = readResource("jazz/lists.xml")
+        val jazzDataTxt = readResource("jazz/jazzData.txt")
+        jazzParser = JazzParser(jazzDataTxt)
+        //collections = readResource("jazz/collections.xml")
+        //lists = readResource("jazz/lists.xml")
 
         Log.d("Bla", filesDir.toString())
 
-        // READ / WRITE to Internal Storage WORKS!!!
-        //val tmp:String = readResource("jazz/collections.xml")
-        //writeToInternalStorage("jazzScalesCollections.xml",tmp)
-        //collections = readFromInternalStorage("jazzScalesCollections.xml")
+        // This is how you READ / WRITE to Internal Storage
+        //val tmp:String = readResource("jazz/jazzData.txt")
+        //writeToInternalStorage("jazzScalesData.txt", tmp)
+        //jazzDataTxt = readFromInternalStorage("jazzScalesData.txt")
+//        llChoose.visibility = View.GONE
+    }
+
+
+    private fun loadJazzParser() {
+        val jazzDataTxt = readResource("jazz/jazzData.txt")
+        jazzParser = JazzParser(jazzDataTxt)
     }
 
     fun renderMusic(music: String) {
@@ -83,8 +91,9 @@ class MainActivity : AppCompatActivity() {
         //    [V:2 clef=bass]   [E,B,][D,A,][C,G,] |
         //""")
 
-        val scales = JazzXmlParser.getAllTags(collections, "scale").map{JazzXmlParser.Xml(it)}
-        val Cdim6:String = scales.filter{it.name=="Cdim6"}.first().value!!
+        //val scales = JazzXmlParser.getAllTags(collections, "scale").map{JazzXmlParser.Xml(it)}
+        val scales = jazzParser.getAll("scale")
+        val Cdim6:String = scales.filter{it.name=="Cdim6"}.first().music
 
         renderMusic("""
           L:1/1
@@ -139,33 +148,45 @@ class MainActivity : AppCompatActivity() {
 
     fun expandLists(v:View) {
         currentMenu = "lists"
-        val popup = PopupMenu(this, v)
-        popup.inflate(R.menu.popup_menu)
-        popup.show()
+        llSidebar.visibility = View.GONE
+        llChoose.visibility = View.VISIBLE
     }
 
     fun expandCollections(v:View) {
         currentMenu = "collections"
-        val popup = PopupMenu(this, v)
-        popup.inflate(R.menu.popup_menu)
-        popup.show()
+        llChoose.visibility = View.GONE
+        llChoose.visibility = View.VISIBLE
     }
 
-    fun clickedSelect(item: MenuItem) {
+    fun clickedSelect(v:View ) {
         //TODO:
         // if currentMenu == lists, list what's in the lists
         // else, list what's in the collections
         Log.d("Select is clicked!", currentMenu)
+   //     showSelections()
     }
-    fun clickedEdit(item: MenuItem) {
+    fun clickedEdit(v: View) {
         Log.d("Edit is clicked!", currentMenu)
     }
-    fun clickedAdd(item: MenuItem) {
+    fun clickedAdd(v: View) {
         Log.d("Add is clicked!", currentMenu)
     }
-    fun clickedRemove(item: MenuItem) {
+    fun clickedRemove(v: View) {
         Log.d("Remove is clicked!", currentMenu)
     }
+
+    //fun showSelections() {
+    //    val btnScales = Button(this)
+    //    val btnChords = Button(this)
+    //    val btnCustom = Button(this)
+
+    //    btnScales.text = "Scales"
+
+    //    val ll = llSidebar
+    //    val lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+    //    ll.addView(btnScales, lp)
+    //}
+
     // FIXME
     // See: https://developer.android.com/guide/topics/ui/menus.html
     //fun clickedMenuItem(item: MenuItem): Boolean {

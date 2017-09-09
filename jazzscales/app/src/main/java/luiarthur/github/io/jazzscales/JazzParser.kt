@@ -7,9 +7,10 @@ data class JazzData(
     val name: String, 
     val list: List<String>,
     val music: String) {
-  override fun toString(): String {
-    return "type:$type; name:$name; list:${list.joinToString()}, music:{$music};"
-  }
+
+    override fun toString(): String {
+      return "type:$type; name:$name; list:${list.joinToString()}; music:{$music};"
+    }
 }
 
 class JazzParser(val text: String) {
@@ -24,26 +25,29 @@ class JazzParser(val text: String) {
     return JazzData(tnlm[0], tnlm[1], tnlm[2].split(",").map{it.trim()}, tnlm[3].drop(1).dropLast(1))
   }
 
-  fun toJazzData(): List<JazzData> {
+  fun jazzData(): List<JazzData> {
     val ls = re.findAll(text).map{it.value}.toList()
     return ls.map{line -> lineToJazzData(line)}
   }
 
-  val jazzData = this.toJazzData()
+  fun contains(type:String, name:String): Boolean {
+    return jazzData().map{Pair(it.type, it.name)}.contains(Pair(type, name))
+  }
 
-  fun getAllLists(): List<String> = jazzData.map{it.list}.flatten().toSet().filterNot{it == "none"}
+  fun getAllLists(): List<String> = jazzData().map{it.list}.flatten().toSet().filterNot{it == "none"}
 
   fun getAll(type: String): List<JazzData> {
     require(type in listOf("scale","chord","custom"))
-    return jazzData.filter{ it.type == type }
+    return jazzData().filter{ it.type == type }
   }
 
   fun addElement(type:String, name: String, list: List<String>, music: String): JazzParser {
     require(type in listOf("scale","chord","custom"))
+    require(!contains(type, name))
     return JazzParser(text + "\n" + JazzData(type,name,list,music).toString())
   }
 
-  fun rmElement(name: String, music: String, list: String): JazzParser {
+  fun rmElement(type: String, name: String): JazzParser {
     TODO()
   }
 
@@ -76,7 +80,7 @@ type:custom; name:custom1; list:none; music:{
 """
 
 val p = JazzParser(text)
-val j = p.toJazzData()
+val j = p.jazzData()
 j.forEach{println(it)}
 
 p.getAll("scale")
@@ -85,5 +89,6 @@ p.getAll("custom")
 
 val p1 = p.addElement("scale", "bebop" , listOf("none"), "CDEFGA_BBc")
 p1.addElement("scale", "bebop" , listOf("none"), "CDEFGA_BBc")
+p1.contains("scale", "bebop")
 
 */

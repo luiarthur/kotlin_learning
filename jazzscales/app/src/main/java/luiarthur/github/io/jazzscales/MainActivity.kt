@@ -75,8 +75,12 @@ class MainActivity : AppCompatActivity() {
         wvScore.evaluateJavascript("ABCJS.renderAbc('music', music)", null)
     }
 
-    fun setStaffWidth(staffWidth: Int) {
-        musicStaffWidth = staffWidth
+    fun refreshWebViewScore(v:View) {
+        renderMusic("""
+          L:1/1
+          K:C
+          $abcMusic
+        """)
     }
 
     fun transpose(music: String): String{
@@ -86,18 +90,6 @@ class MainActivity : AppCompatActivity() {
         TODO()
     }
 
-    fun refreshWebViewScore(v:View) {
-        renderMusic("""
-          L:1/1
-          K:C
-          $abcMusic
-        """)
-    }
-
-
-    //fun doSomething(v: View) {
-    //   TODO()
-    //}
 
     // read text file relative to assets dir
     private fun readResource(path: String):String {
@@ -166,6 +158,24 @@ class MainActivity : AppCompatActivity() {
         for (list in lists) {
             val btn = Button(this)
             btn.text = list
+
+            btn.setOnClickListener(View.OnClickListener {
+                // Code here executes on main thread after user presses button
+                val music:List<JazzData> = jazzParser.jazzData().filter{it.list.contains(list)}
+
+                llDummy.removeAllViews()
+                createHomeButton()
+
+                for (m in music.sortedBy { it.name }) {
+                    val mbtn = Button(this)
+                    mbtn.text = m.name
+                    mbtn.setOnClickListener(View.OnClickListener {
+                        abcMusic = m.music
+                        renderMusic(m.music)
+                    })
+                    llDummy.addView(mbtn)
+                }
+            })
 
             llDummy.addView(btn, lp)
         }

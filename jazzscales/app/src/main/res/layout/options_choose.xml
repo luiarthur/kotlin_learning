@@ -8,6 +8,13 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Home"
+        android:id="@+id/btnHome"
+        android:onClick="clickedHome"
+        android:layout_gravity="center_vertical"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Select"
         android:id="@+id/btnSelect"
         android:onClick="clickedSelect"
@@ -33,5 +40,6 @@
         android:id="@+id/btnRemove"
         android:onClick="clickedRemove"
         android:layout_gravity="center_vertical"/>
+
 </LinearLayout>
 

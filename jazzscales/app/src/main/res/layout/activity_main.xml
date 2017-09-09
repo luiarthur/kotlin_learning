@@ -12,16 +12,6 @@
         android:layout_height="fill_parent"
         android:layout_weight=".70"/>
 
-    <!--Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Refresh"
-        android:id="@+id/buttonRefresh"
-        android:onClick="refreshWebViewScore"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="6dp" /-->
-
     <ScrollView
         android:layout_width="0dip"
         android:layout_height="match_parent"
@@ -31,10 +21,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:id="@+id/llWrapper">
+            android:id="@+id/llSidebar">
 
             <include layout="@layout/options_main"></include>
             <include layout="@layout/options_choose" android:visibility="gone"></include>
+            <include layout="@layout/options_dummy" android:visibility="gone"></include>
 
         </LinearLayout>
     </ScrollView>

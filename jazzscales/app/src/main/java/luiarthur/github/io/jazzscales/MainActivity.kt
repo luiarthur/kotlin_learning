@@ -13,12 +13,15 @@ import android.widget.PopupMenu
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.*
 import java.nio.file.Files.delete
-import android.widget.LinearLayout
+import android.widget.LinearLayout.LayoutParams
 import android.view.ViewGroup
 import android.widget.TextView
 import android.view.LayoutInflater
 import kotlinx.android.synthetic.main.options_choose.*
 import kotlinx.android.synthetic.main.options_main.*
+import android.R.attr.button
+import android.widget.LinearLayout
+import kotlinx.android.synthetic.main.options_dummy.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -146,16 +149,74 @@ class MainActivity : AppCompatActivity() {
         return s
     }
 
-    fun expandLists(v:View) {
-        currentMenu = "lists"
-        llSidebar.visibility = View.GONE
-        llChoose.visibility = View.VISIBLE
+    fun createHomeButton() {
+        val btnHome = Button(this)
+        btnHome.text = "Home"
+        btnHome.setOnClickListener(View.OnClickListener {
+            // Code here executes on main thread after user presses button
+            llDummy.removeAllViews()
+            llDummy.visibility = View.GONE
+            llMainOptions.visibility = View.VISIBLE
+        })
+
+        val lp = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+        llDummy.addView(btnHome, lp)
     }
 
+
+    //TODO: On click btn, do show stuff
+    fun expandLists(v:View) {
+        val lp = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+        currentMenu = "lists"
+        llMainOptions.visibility = View.GONE
+        llDummy.visibility = View.VISIBLE
+
+        val lists = jazzParser.getAllLists()
+
+        createHomeButton()
+        for (list in lists) {
+            val btn = Button(this)
+            btn.text = list
+
+            llDummy.addView(btn, lp)
+        }
+    }
+
+    //TODO: On click btn, do show stuff
     fun expandCollections(v:View) {
+        val lp = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
         currentMenu = "collections"
-        llChoose.visibility = View.GONE
-        llChoose.visibility = View.VISIBLE
+        llMainOptions.visibility = View.GONE
+        llDummy.visibility = View.VISIBLE
+
+        val collections = listOf("Scale", "Chord", "Custom")
+
+        createHomeButton()
+
+        // Create Other Buttons
+        for (c in collections) {
+            val btn = Button(this)
+            btn.text = c
+            btn.setOnClickListener(View.OnClickListener {
+                // Code here executes on main thread after user presses button
+                val music:List<JazzData> = jazzParser.getAll(c.toLowerCase())
+
+                llDummy.removeAllViews()
+                createHomeButton()
+
+                for (m in music) {
+                    val mbtn = Button(this)
+                    mbtn.text = m.name
+                    mbtn.setOnClickListener(View.OnClickListener {
+                        renderMusic(m.music)
+                    })
+                    llDummy.addView(mbtn)
+                }
+
+            })
+
+            llDummy.addView(btn, lp)
+        }
     }
 
     fun clickedSelect(v:View ) {
@@ -174,43 +235,11 @@ class MainActivity : AppCompatActivity() {
     fun clickedRemove(v: View) {
         Log.d("Remove is clicked!", currentMenu)
     }
-
-    //fun showSelections() {
-    //    val btnScales = Button(this)
-    //    val btnChords = Button(this)
-    //    val btnCustom = Button(this)
-
-    //    btnScales.text = "Scales"
-
-    //    val ll = llSidebar
-    //    val lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-    //    ll.addView(btnScales, lp)
-    //}
-
-    // FIXME
-    // See: https://developer.android.com/guide/topics/ui/menus.html
-    //fun clickedMenuItem(item: MenuItem): Boolean {
-    //    when (item.itemId) {
-    //        R.id.Select -> {
-    //            Log.d("Select is clicked!", currentMenu)
-    //            return true
-    //        }
-    //        R.id.Remove -> {
-    //            Log.d("Remove is clicked!", currentMenu)
-    //            return true
-    //        }
-    //        R.id.Edit-> {
-    //            Log.d("Edit is clicked!", currentMenu)
-    //            return true
-    //        }
-    //        R.id.Add -> {
-    //            Log.d("Add is clicked!", currentMenu)
-    //            return true
-    //        }
-    //        else -> return false // shouldn't ever happen
-    //    }
-    //}
-
+    fun clickedHome(v: View) {
+        Log.d("Home is clicked!", currentMenu)
+        llChoose.visibility = View.GONE
+        llMainOptions.visibility = View.VISIBLE
+    }
 }
 
 

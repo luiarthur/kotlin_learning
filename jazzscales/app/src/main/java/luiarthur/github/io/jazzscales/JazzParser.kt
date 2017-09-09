@@ -31,6 +31,8 @@ class JazzParser(val text: String) {
 
   val jazzData = this.toJazzData()
 
+  fun getAllLists(): List<String> = jazzData.map{it.list}.flatten().toSet().filterNot{it == "none"}
+
   fun getAll(type: String): List<JazzData> {
     require(type in listOf("scale","chord","custom"))
     return jazzData.filter{ it.type == type }

@@ -1,27 +1,21 @@
 package luiarthur.github.io.jazzscales
 
 import android.content.Context
-import android.content.res.AssetManager
-import android.support.v7.app.AppCompatActivity
+import android.graphics.Color
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.view.MenuItem
 import android.view.View
 import android.webkit.WebViewClient
 import android.widget.Button
+import android.widget.LinearLayout.LayoutParams
 import android.widget.PopupMenu
 import kotlinx.android.synthetic.main.activity_main.*
-import java.io.*
-import java.nio.file.Files.delete
-import android.widget.LinearLayout.LayoutParams
-import android.view.ViewGroup
-import android.widget.TextView
-import android.view.LayoutInflater
 import kotlinx.android.synthetic.main.options_choose.*
-import kotlinx.android.synthetic.main.options_main.*
-import android.R.attr.button
-import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.options_dummy.*
+import kotlinx.android.synthetic.main.options_main.*
+import java.io.ByteArrayOutputStream
+import java.io.IOException
 
 
 class MainActivity : AppCompatActivity() {
@@ -32,6 +26,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var currentMenu: String
     private lateinit var jazzParser: JazzParser
+    private lateinit var jazzData: JazzData
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,11 +66,11 @@ class MainActivity : AppCompatActivity() {
     fun renderMusic(music: String) {
         // sharps: '^' preceding note
         // flats:  '_' preceding note
-        wvScore.evaluateJavascript( "var music = `%%staffwidth $musicStaffWidth\n $music`", null)
+        wvScore.evaluateJavascript("var music = `%%staffwidth $musicStaffWidth\n $music`", null)
         wvScore.evaluateJavascript("ABCJS.renderAbc('music', music)", null)
     }
 
-    fun refreshWebViewScore(v:View) {
+    fun refreshWebViewScore(v: View) {
         renderMusic("""
           L:1/1
           K:C
@@ -83,7 +78,7 @@ class MainActivity : AppCompatActivity() {
         """)
     }
 
-    fun transpose(music: String): String{
+    fun transpose(music: String): String {
         // music must be in key of C
         // change the Key (K:C)
         // change the music
@@ -92,7 +87,7 @@ class MainActivity : AppCompatActivity() {
 
 
     // read text file relative to assets dir
-    private fun readResource(path: String):String {
+    private fun readResource(path: String): String {
         val ins = assets.open(path)
         val baos = ByteArrayOutputStream()
         var i: Int
@@ -110,13 +105,13 @@ class MainActivity : AppCompatActivity() {
         return baos.toString()
     }
 
-    private fun writeToInternalStorage(filename:String, text:String) {
+    private fun writeToInternalStorage(filename: String, text: String) {
         val outputStream = openFileOutput(filename, Context.MODE_PRIVATE)
         outputStream.write(text.toByteArray())
         outputStream.close()
     }
 
-    private fun readFromInternalStorage(filename:String):String {
+    private fun readFromInternalStorage(filename: String): String {
         val fin = openFileInput(filename)
 
         var c = fin.read()
@@ -130,9 +125,10 @@ class MainActivity : AppCompatActivity() {
         return s
     }
 
-    fun createHomeButton() {
+    private fun createHomeButton() {
         val btnHome = Button(this)
         btnHome.text = "Home"
+        btnHome.setBackgroundColor(Color.GRAY)
         btnHome.setOnClickListener(View.OnClickListener {
             // Code here executes on main thread after user presses button
             llDummy.removeAllViews()
@@ -144,9 +140,21 @@ class MainActivity : AppCompatActivity() {
         llDummy.addView(btnHome, lp)
     }
 
+    private fun createBackButton(f: (View) -> Unit) {
+        val btnBack = Button(this)
+        btnBack.text = "Back"
+        btnBack.setBackgroundColor(Color.GRAY)
+        btnBack.setOnClickListener(View.OnClickListener {
+            llDummy.removeAllViews()
+            f(View(this))
+        })
+        val lp = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+        llDummy.addView(btnBack, lp)
+    }
+
 
     //TODO: On click btn, do show stuff
-    fun expandLists(v:View) {
+    fun expandLists(v: View) {
         val lp = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
         currentMenu = "lists"
         llMainOptions.visibility = View.GONE
@@ -161,14 +169,15 @@ class MainActivity : AppCompatActivity() {
 
             btn.setOnClickListener(View.OnClickListener {
                 // Code here executes on main thread after user presses button
-                val music:List<JazzData> = jazzParser.jazzData().filter{it.list.contains(list)}
+                val music: List<JazzData> = jazzParser.jazzData.filter { it.list.contains(list) }
 
                 llDummy.removeAllViews()
                 createHomeButton()
+                createBackButton({ x -> expandLists(x) })
 
                 for (m in music.sortedBy { it.name }) {
                     val mbtn = Button(this)
-                    mbtn.text = m.name
+                    mbtn.text = m.name + " " + m.type
                     mbtn.setOnClickListener(View.OnClickListener {
                         abcMusic = m.music
                         renderMusic(m.music)
@@ -182,7 +191,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     //TODO: On click btn, do show stuff
-    fun expandCollections(v:View) {
+    fun expandCollections(v: View) {
         val lp = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
         currentMenu = "collections"
         llMainOptions.visibility = View.GONE
@@ -198,19 +207,29 @@ class MainActivity : AppCompatActivity() {
             btn.text = c
             btn.setOnClickListener(View.OnClickListener {
                 // Code here executes on main thread after user presses button
-                val music:List<JazzData> = jazzParser.getAll(c.toLowerCase())
+                val music: List<JazzData> = jazzParser.getAll(c.toLowerCase())
 
                 llDummy.removeAllViews()
                 createHomeButton()
+                createBackButton({ x -> expandCollections(x) })
 
                 for (m in music.sortedBy { it.name }) {
                     val mbtn = Button(this)
-                    mbtn.text = m.name
+                    mbtn.text = m.name + " " + m.type
                     mbtn.setOnClickListener(View.OnClickListener {
                         abcMusic = m.music
                         renderMusic(m.music)
                     })
                     llDummy.addView(mbtn)
+
+                    mbtn.setOnLongClickListener(View.OnLongClickListener {
+                        val popup = PopupMenu(this, v)
+                        popup.inflate(R.menu.popup_menu)
+                        popup.show()
+                        jazzData = m
+                        //Log.d("HERE", jazzData.toString())
+                        true // required to return true
+                    })
                 }
 
             })
@@ -219,22 +238,26 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun clickedSelect(v:View ) {
+    fun clickedSelect(v: View) {
         //TODO:
         // if currentMenu == lists, list what's in the lists
         // else, list what's in the collections
         Log.d("Select is clicked!", currentMenu)
-   //     showSelections()
+        //     showSelections()
     }
+
     fun clickedEdit(v: View) {
         Log.d("Edit is clicked!", currentMenu)
     }
+
     fun clickedAdd(v: View) {
         Log.d("Add is clicked!", currentMenu)
     }
+
     fun clickedRemove(v: View) {
         Log.d("Remove is clicked!", currentMenu)
     }
+
     fun clickedHome(v: View) {
         Log.d("Home is clicked!", currentMenu)
         llChoose.visibility = View.GONE

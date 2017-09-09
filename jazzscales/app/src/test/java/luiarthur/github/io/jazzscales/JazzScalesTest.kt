@@ -9,7 +9,7 @@ import org.junit.Assert.*
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-class ExampleUnitTest {
+class JazzScalesTest {
     @Test
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
@@ -72,9 +72,23 @@ class ExampleUnitTest {
         """
 
         val p = JazzParser(text)
-        val j = p.jazzData()
 
         val p1 = p.addElement("scale", "bebop" , listOf("none"), "CDEFGA_BBc")
         assert(p1.contains("scale", "bebop"))
+
+        //val j = p.jazzData
+        //j.forEach{println(it)}
+
+        assert(p1.contains("scale", "bebop"))
+
+        //p1.rmElement("scale", "bebop")
+        //p1.getElement("scale", "bebop")
+        //p1.editElement("scale", "bebop", list=listOf("hey", "now"), music="ABC")
+
+        assert(p1.isValid())
+
+        println(p1.toString())
+        println(p1.rmFromList("scale","Cdim6", "routines").toString())
+        println(p1.rmFromList("scale","C", "routines").toString())
     }
 }

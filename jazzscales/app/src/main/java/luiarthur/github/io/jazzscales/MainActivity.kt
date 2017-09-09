@@ -26,6 +26,7 @@ import kotlinx.android.synthetic.main.options_dummy.*
 
 class MainActivity : AppCompatActivity() {
 
+    private var abcMusic = ""
     private val url = "file:///android_asset/html/template.html"
     private var musicStaffWidth = 400
 
@@ -59,7 +60,6 @@ class MainActivity : AppCompatActivity() {
         //val tmp:String = readResource("jazz/jazzData.txt")
         //writeToInternalStorage("jazzScalesData.txt", tmp)
         //jazzDataTxt = readFromInternalStorage("jazzScalesData.txt")
-//        llChoose.visibility = View.GONE
     }
 
 
@@ -87,21 +87,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun refreshWebViewScore(v:View) {
-        //renderMusic("""
-        //    L: 1/1
-        //    K: C
-        //    [V:1 clef=treble] [DG][FC][E^A] |
-        //    [V:2 clef=bass]   [E,B,][D,A,][C,G,] |
-        //""")
-
-        //val scales = JazzXmlParser.getAllTags(collections, "scale").map{JazzXmlParser.Xml(it)}
-        val scales = jazzParser.getAll("scale")
-        val Cdim6:String = scales.filter{it.name=="Cdim6"}.first().music
-
         renderMusic("""
           L:1/1
           K:C
-          $Cdim6
+          $abcMusic
         """)
     }
 
@@ -204,10 +193,11 @@ class MainActivity : AppCompatActivity() {
                 llDummy.removeAllViews()
                 createHomeButton()
 
-                for (m in music) {
+                for (m in music.sortedBy { it.name }) {
                     val mbtn = Button(this)
                     mbtn.text = m.name
                     mbtn.setOnClickListener(View.OnClickListener {
+                        abcMusic = m.music
                         renderMusic(m.music)
                     })
                     llDummy.addView(mbtn)

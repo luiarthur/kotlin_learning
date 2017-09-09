@@ -47,4 +47,34 @@ class ExampleUnitTest {
         val c = JazzXmlParser.findElement(testXml, "C", "scale")
         val d = JazzXmlParser.editElement(testXml, "C", "scale", "ABC")
     }
+
+    @Test
+    fun testJazzParser() {
+        val text = """
+            ### predefined scales ###
+            type:  scale; name: Cdim6; list: favorites  , routines; music: {
+              CDEFG^GABc
+            };
+            type :scale; name:C; list:routines; music:{CDEFGABc};
+
+            ### predefined chords ###
+            type:chord; name:C; list:favorites; music:{[EGBD]};
+
+            ### predefined custom patterns ###
+            type:custom; name:custom1; list:none; music:{[C E] | D};
+
+            type:custom; name:custom1; list:none; music:{
+              [C E] |
+              FGA
+            };
+
+            ### user-define items ###
+        """
+
+        val p = JazzParser(text)
+        val j = p.jazzData()
+
+        val p1 = p.addElement("scale", "bebop" , listOf("none"), "CDEFGA_BBc")
+        assert(p1.contains("scale", "bebop"))
+    }
 }

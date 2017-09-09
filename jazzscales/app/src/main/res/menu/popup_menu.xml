@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>		
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"		
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/Edit"		
+    <item android:id="@+id/Edit"
+          android:onClick="clickedEdit"
           android:title="Edit" />		
-    <item android:id="@+id/Add"		
-          android:title="Add" />		
-    <item android:id="@+id/Remove"		
-          android:title="Remove"/>		
+    <item android:id="@+id/Add"
+          android:onClick="clickedAdd"
+          android:title="Add" />
+    <item android:id="@+id/Remove"
+          android:onClick="clickedRemove"
+          android:title="Remove"/>
 </menu>

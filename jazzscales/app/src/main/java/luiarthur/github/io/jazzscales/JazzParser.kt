@@ -9,10 +9,6 @@ data class JazzData(val type: String, val name: String, val list: List<String>, 
 }
 
 class JazzParser(val text: String) {
-    override fun toString(): String {
-        return text
-    }
-
     val re = Regex("type\\s*:\\s*\\w+\\s*;\\s*name\\s*:\\s*\\w+\\s*;\\s*list\\s*:(\\s*\\w+\\s*,\\s*)*\\w+\\s*;\\s*music\\s*:\\s*\\{[^\\}]+\\};")
 
     private fun lineToJazzData(line: String): JazzData {
@@ -23,6 +19,10 @@ class JazzParser(val text: String) {
     val jazzData: List<JazzData> = run {
         val ls = re.findAll(text).map { it.value }.toList()
         ls.map { line -> lineToJazzData(line) }
+    }
+
+    override fun toString(): String {
+        return jazzData.joinToString("\n")
     }
 
     fun contains(type: String, name: String): Boolean {

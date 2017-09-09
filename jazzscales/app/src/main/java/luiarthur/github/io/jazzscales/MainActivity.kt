@@ -5,16 +5,17 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.webkit.WebViewClient
 import android.widget.Button
 import android.widget.LinearLayout.LayoutParams
 import android.widget.PopupMenu
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.options_choose.*
 import kotlinx.android.synthetic.main.options_dummy.*
 import kotlinx.android.synthetic.main.options_main.*
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.io.IOException
 
 
@@ -23,10 +24,13 @@ class MainActivity : AppCompatActivity() {
     private var abcMusic = ""
     private val url = "file:///android_asset/html/template.html"
     private var musicStaffWidth = 400
+    private val defaultJazzDataPath = "jazz/jazzData.txt"
+    private val internalStorageFilename = "jazzScalesData.txt"
 
     private lateinit var currentMenu: String
     private lateinit var jazzParser: JazzParser
-    private lateinit var jazzData: JazzData
+    private lateinit var currentJazzData: JazzData
+    private lateinit var currentList: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,12 +48,16 @@ class MainActivity : AppCompatActivity() {
         wvScore.loadUrl(url)
 
         // Initialize jazz collections and lists
-        val jazzDataTxt = readResource("jazz/jazzData.txt")
+        val jazzDataTxt = if (File(filesDir, internalStorageFilename).exists()) {
+            Log.d("HERE", "I read file from internal storage")
+            Log.d("HERE", "filesDir: " + filesDir.toString())
+            //readFromInternalStorage(filesDir.toString() + "/" + internalStorageFile)
+            readFromInternalStorage(internalStorageFilename)
+        } else {
+            Log.d("HERE", "I DID NOT read file from internal storage")
+            readResource(defaultJazzDataPath)
+        }
         jazzParser = JazzParser(jazzDataTxt)
-        //collections = readResource("jazz/collections.xml")
-        //lists = readResource("jazz/lists.xml")
-
-        Log.d("Bla", filesDir.toString())
 
         // This is how you READ / WRITE to Internal Storage
         //val tmp:String = readResource("jazz/jazzData.txt")
@@ -57,11 +65,6 @@ class MainActivity : AppCompatActivity() {
         //jazzDataTxt = readFromInternalStorage("jazzScalesData.txt")
     }
 
-
-    private fun loadJazzParser() {
-        val jazzDataTxt = readResource("jazz/jazzData.txt")
-        jazzParser = JazzParser(jazzDataTxt)
-    }
 
     fun renderMusic(music: String) {
         // sharps: '^' preceding note
@@ -153,6 +156,38 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    /* Shows all available scales in `music`
+     * Also sets up the OnClick, and OnLongClick listeners
+     */
+    fun displayMusicOptions(v:View, music: List<JazzData>) {
+        llDummy.removeAllViews()
+        createHomeButton()
+        when (currentMenu) {
+            "lists" -> createBackButton{ expandLists(it) }
+            "collections" -> createBackButton{ expandCollections(it) }
+            else -> Log.d("HERE", "In displayMusicOption: This shouldn't happen!")
+        }
+
+        for (m in music.sortedBy { it.name }) {
+            val mbtn = Button(this)
+            mbtn.text = m.name + " " + m.type
+            mbtn.setOnClickListener(View.OnClickListener {
+                abcMusic = m.music
+                renderMusic(m.music)
+            })
+            llDummy.addView(mbtn)
+
+            mbtn.setOnLongClickListener(View.OnLongClickListener {
+                val popup = PopupMenu(this, v)
+                popup.inflate(R.menu.popup_menu)
+                popup.show()
+                currentJazzData = m
+                //Log.d("HERE", jazzData.toString())
+                true // required to return true
+            })
+        }
+    }
+
     //TODO: On click btn, do show stuff
     fun expandLists(v: View) {
         val lp = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
@@ -170,20 +205,8 @@ class MainActivity : AppCompatActivity() {
             btn.setOnClickListener(View.OnClickListener {
                 // Code here executes on main thread after user presses button
                 val music: List<JazzData> = jazzParser.jazzData.filter { it.list.contains(list) }
-
-                llDummy.removeAllViews()
-                createHomeButton()
-                createBackButton({ x -> expandLists(x) })
-
-                for (m in music.sortedBy { it.name }) {
-                    val mbtn = Button(this)
-                    mbtn.text = m.name + " " + m.type
-                    mbtn.setOnClickListener(View.OnClickListener {
-                        abcMusic = m.music
-                        renderMusic(m.music)
-                    })
-                    llDummy.addView(mbtn)
-                }
+                currentList = list
+                displayMusicOptions(v, music)
             })
 
             llDummy.addView(btn, lp)
@@ -208,61 +231,57 @@ class MainActivity : AppCompatActivity() {
             btn.setOnClickListener(View.OnClickListener {
                 // Code here executes on main thread after user presses button
                 val music: List<JazzData> = jazzParser.getAll(c.toLowerCase())
-
-                llDummy.removeAllViews()
-                createHomeButton()
-                createBackButton({ x -> expandCollections(x) })
-
-                for (m in music.sortedBy { it.name }) {
-                    val mbtn = Button(this)
-                    mbtn.text = m.name + " " + m.type
-                    mbtn.setOnClickListener(View.OnClickListener {
-                        abcMusic = m.music
-                        renderMusic(m.music)
-                    })
-                    llDummy.addView(mbtn)
-
-                    mbtn.setOnLongClickListener(View.OnLongClickListener {
-                        val popup = PopupMenu(this, v)
-                        popup.inflate(R.menu.popup_menu)
-                        popup.show()
-                        jazzData = m
-                        //Log.d("HERE", jazzData.toString())
-                        true // required to return true
-                    })
-                }
-
+                displayMusicOptions(v, music)
             })
 
             llDummy.addView(btn, lp)
         }
     }
 
-    fun clickedSelect(v: View) {
-        //TODO:
-        // if currentMenu == lists, list what's in the lists
-        // else, list what's in the collections
-        Log.d("Select is clicked!", currentMenu)
-        //     showSelections()
-    }
 
-    fun clickedEdit(v: View) {
+    // TODO: Implement these 3 functions
+    fun clickedEdit(item: MenuItem) {
         Log.d("Edit is clicked!", currentMenu)
+        when (currentMenu){
+            "lists" -> run {
+                Log.d("HERE", jazzParser.getAllLists().joinToString())
+            }
+            "collections" -> run {
+                Log.d("HERE", currentJazzData.toString())
+            }
+        }
     }
 
-    fun clickedAdd(v: View) {
+    fun clickedAdd(item: MenuItem) {
         Log.d("Add is clicked!", currentMenu)
+        //restoreAppDefauls()
     }
 
-    fun clickedRemove(v: View) {
+    // TODO:
+    // 1. Add dialog box to confirm
+    // 2. Refresh screen after delete
+    fun clickedRemove(item: MenuItem) {
         Log.d("Remove is clicked!", currentMenu)
+        when (currentMenu) {
+            "lists" -> run {
+                jazzParser = jazzParser.rmFromList(currentJazzData.type, currentJazzData.name, currentList)
+            }
+            "collections" -> run {
+                jazzParser = jazzParser.rmElement(currentJazzData.type, currentJazzData.name)
+            }
+            else -> Log.d("HERE", "Shouldn't be here!")
+        }
+        writeToInternalStorage(filename=internalStorageFilename, text=jazzParser.text)
+        val tmp = readFromInternalStorage(internalStorageFilename)
+        Log.d("HERE", "\n" + tmp)
     }
 
-    fun clickedHome(v: View) {
-        Log.d("Home is clicked!", currentMenu)
-        llChoose.visibility = View.GONE
-        llMainOptions.visibility = View.VISIBLE
+    fun restoreAppDefaults(v:View) {
+        val file = File(filesDir, internalStorageFilename)
+        file.delete()
+        Log.d("HERE", "Deleted the file")
+        val jazzDataTxt = readResource(defaultJazzDataPath)
+        jazzParser = JazzParser(jazzDataTxt)
     }
 }
-
 

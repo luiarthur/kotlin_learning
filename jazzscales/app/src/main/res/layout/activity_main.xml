@@ -24,7 +24,6 @@
             android:id="@+id/llSidebar">
 
             <include layout="@layout/options_main"></include>
-            <include layout="@layout/options_choose" android:visibility="gone"></include>
             <include layout="@layout/options_dummy" android:visibility="gone"></include>
 
         </LinearLayout>

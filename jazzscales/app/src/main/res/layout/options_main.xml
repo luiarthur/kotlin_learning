@@ -28,5 +28,13 @@
         android:id="@+id/btnRefresh"
         android:onClick="refreshWebViewScore"
         android:layout_gravity="center_vertical" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Settings"
+        android:id="@+id/btnSettings"
+        android:onClick="restoreAppDefaults"
+        android:layout_gravity="center_vertical" />
 </LinearLayout>
 

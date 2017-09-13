@@ -1,0 +1,40 @@
+<html np-app>
+<!--save data with js-->
+<!--https://codepen.io/davidelrizzo/pen/cxsGb-->
+
+<head>
+  <script src='/js/jquery.min.js'></script>
+  <script src='/js/bootstrap.min.js'></script>
+  <script src='/js/abcjs_basic_3.0-min.js'></script>
+  <script src='/js/jazz.js'></script>
+
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">Jazz Scales</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#">Lists</a></li>
+        <li><a href="#">Collections</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class='container-fluid'>
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div id='music'></div>
+        <textarea id='edit'rows="10"style='display:inline' onkeyup='renderMusic()'>
+        </textarea>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

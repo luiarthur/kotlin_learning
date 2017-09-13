@@ -1,6 +1,7 @@
 package luiarthur.github.io.jazzscales
 
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -23,7 +24,6 @@ class MainActivity : AppCompatActivity() {
 
     private var abcMusic = ""
     private val url = "file:///android_asset/html/template.html"
-    private var musicStaffWidth = 400
     private val defaultJazzDataPath = "jazz/jazzData.txt"
     private val internalStorageFilename = "jazzScalesData.txt"
 
@@ -66,10 +66,19 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    fun getScreenWidth(): Int {
+        return Resources.getSystem().getDisplayMetrics().widthPixels
+    }
+
+    //fun getScreenHeight(): Int {
+    //    return Resources.getSystem().getDisplayMetrics().heightPixels
+    //}
+
     fun renderMusic(music: String) {
         // sharps: '^' preceding note
         // flats:  '_' preceding note
-        wvScore.evaluateJavascript("var music = `%%staffwidth $musicStaffWidth\n $music`", null)
+        //wvScore.evaluateJavascript("var music = `%%staffwidth $musicStaffWidth\n $music`", null)
+        wvScore.evaluateJavascript("var music = `%%staffwidth 400\n $music`", null)
         wvScore.evaluateJavascript("ABCJS.renderAbc('music', music)", null)
     }
 
@@ -178,6 +187,9 @@ class MainActivity : AppCompatActivity() {
             llDummy.addView(mbtn)
 
             mbtn.setOnLongClickListener(View.OnLongClickListener {
+                abcMusic = m.music
+                renderMusic(m.music)
+
                 val popup = PopupMenu(this, v)
                 popup.inflate(R.menu.popup_menu)
                 popup.show()
@@ -247,7 +259,12 @@ class MainActivity : AppCompatActivity() {
                 Log.d("HERE", jazzParser.getAllLists().joinToString())
             }
             "collections" -> run {
-                Log.d("HERE", currentJazzData.toString())
+                //Log.d("HERE", currentJazzData.toString())
+                Log.d("HERE", "Trying to edit collection!")
+                wvScore.evaluateJavascript("""
+                    fillTextArea('$abcMusic');
+                    editMusic();
+                    """, null)
             }
         }
     }
@@ -255,6 +272,14 @@ class MainActivity : AppCompatActivity() {
     fun clickedAdd(item: MenuItem) {
         Log.d("Add is clicked!", currentMenu)
         //restoreAppDefauls()
+        when (currentMenu) {
+            "lists" -> run {
+                Log.d("HERE", "add to lists needs to be implemented")
+            }
+            "collections" -> run {
+                wvScore.evaluateJavascript("editMusic()", null)
+            }
+        }
     }
 
     // TODO:

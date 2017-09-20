@@ -17,5 +17,10 @@ function getMusic() {
 }
 
 function renderMusic() {
-  ABCJS.renderAbc('music', '%%staffwidth ' + screen.width+ '\n' + getMusic());
+  // Need to test
+  var staffWidth = $('#edit').width() * 0.75;
+  var music = '%%staffwidth ' + staffWidth + '\n' + getMusic();
+  ABCJS.renderAbc('music', music);
+
+  //ABCJS.renderAbc('music', '%%staffwidth ' + screen.width+ '\n' + getMusic());
 }

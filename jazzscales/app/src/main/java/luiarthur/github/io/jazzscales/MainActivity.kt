@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.options_main.*
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
+import luiarthur.github.io.jazzscales.Jazz.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -252,8 +253,10 @@ class MainActivity : AppCompatActivity() {
 
 
     // TODO: Implement these 3 functions
+    //       Remove all Log.d
     fun clickedEdit(item: MenuItem) {
         Log.d("Edit is clicked!", currentMenu)
+        Log.d("HERE", Note("A",4).toString())
         when (currentMenu){
             "lists" -> run {
                 Log.d("HERE", jazzParser.getAllLists().joinToString())

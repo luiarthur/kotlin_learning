@@ -5,8 +5,8 @@
 <head>
   <script src='/js/jquery.min.js'></script>
   <script src='/js/bootstrap.min.js'></script>
-  <script src='/js/abcjs_basic_3.0-min.js'></script>
-  <script src='/js/jazz_interface.js'></script>
+  <script src='/js/abcjs_basic_midi_3.1.4-min.js'></script>
+  <script src='/js/abcjs_ext_scala-opt.js'></script>
 
   <link rel="stylesheet" href="/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/styles.css">
@@ -18,11 +18,26 @@
       <div class="navbar-header">
         <a class="navbar-brand" href="#">Jazz Scales</a>
       </div>
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
-        <li><a href="#">Lists</a></li>
-        <li><a href="#">Collections</a></li>
-        <li><a href="#" onclick='showExample()'>Example</a></li>
+      <ul id="main-navbar" class="nav navbar-nav">
+        <li data-toggle="dropdown" class="active" id='home'>
+          <a href="#">Home</a>
+        </li>
+
+        <li data-toggle="dropdown" id='lists'>
+          <a class="dropdown-toggle" data-toggle="dropdown"href="#">Lists</a>
+        </li>
+
+        <li data-toggle="dropdown" id='collections'>
+          <a class="dropdown-toggle" data-toggle="dropdown"href="#">Collections</a>
+        </li>
+
+        <li data-toggle="dropdown" id='all'>
+          <a class="dropdown-toggle" data-toggle="dropdown"href="#">All</a>
+        </li>
+
+        <li data-toggle="dropdown" id='transpose'>
+          <a class="dropdown-toggle" data-toggle="dropdown"href="#">Transpose</a>
+        </li>
       </ul>
     </div>
   </nav>
@@ -30,12 +45,13 @@
   <div class='container-fluid'>
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <h1 id='musicID'> </h1>
         <div id='music'></div>
-        <textarea id='edit' rows="10" style='display:inline' onkeyup='renderMusic()'>
-        </textarea>
       </div>
     </div>
   </div>
 
 </body>
+
+<script src='/js/jazz_interface.js'></script>
 </html>

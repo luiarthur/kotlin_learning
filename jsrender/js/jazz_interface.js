@@ -5,17 +5,16 @@
 
 // Global Variables Dictionary 
 glob = {'path_to_jazz_orig': '/assets/jazzData_orig.json',
-        'path_to_user_jazz': '/assets/userCreated/jazzData.txt',
+        'path_to_user_jazz': 'jazzDataUser.json',
         'music': null,
         'musicID': null,
         'lists': null,
         'collections': null,
-        'all': null,
         'fileContent': null};
 
 // Read jazzData immediately
 if (glob.collections === null ) { 
-  readFile(path=glob.path_to_jazz_orig, var_name='all');
+  readFile(path=glob.path_to_jazz_orig, var_name='fileContent');
 }
 
 $('#main-navbar li').on('click', function () {
@@ -30,7 +29,7 @@ function transpose(key) {
 }
 
 function filterMusic(type, name) {
-  var out = glob.all.filter(function(x) {return type==x.type && name==x.name});
+  var out = glob.fileContent.filter(function(x) {return type==x.type && name==x.name});
   if (out.length == 0) {
     out = ""
   } else {
@@ -48,25 +47,24 @@ function showMusic(type, name) {
 }
 
 
-function genMenuItem(item) {
-  return `
-    <li role="presentation"><a role="menuitem" tabindex="-1" 
-        onclick='showMusic("${item.type}","${item.name}")'>
-      ${item.name + " " + item.type}
-    </a></li>
-  `;
-}
-
+// Expand All available snippets on click
 $('#all').on('click', function () {
   if ($('#all ul').length == 0) {
     $('#all').append('<ul class="dropdown-menu"></ui>')
-    for (var i in glob.all) {
-      var item = glob.all[i]
-      $('#all ul').append(genMenuItem(item))
+    for (var i in glob.fileContent) {
+      var item = glob.fileContent[i]
+      $('#all ul').append(`
+        <li role="presentation"><a role="menuitem" tabindex="-1" 
+            onclick='showMusic("${item.type}","${item.name}")'>
+          ${item.name + " " + item.type}
+        </a></li>
+      `)
     }
   }
 });
 
+
+// Generate a list of all keys and append to transpose button
 $('#transpose').on('click', function () {
   if ($('#transpose ul').length == 0) {
     $('#transpose').append('<ul class="dropdown-menu"></ui>')
@@ -118,17 +116,15 @@ function readFile(path=glob.path_to_jazz_orig, var_name='fileContent') {
   });
 }
 
-function writeFile(path=glob.path_to_user_jazz, var_name='fileContent') {
-  $.ajax({ url: path, success: function(file_content) {
-      glob[var_name] = file_content;
-    }
-  });
+function writeToClient(path=glob.path_to_user_jazz, var_name='fileContent') {
+  var blob = new Blob([JSON.stringify(glob[var_name])], {type: "json"});
+  saveAs(blob, path);
 }
 
-function showExample() {
-  readFile();
-  fillTextArea(glob.fileContent);
-}
+$('#save').on('click', function () {
+  console.log("save as")
+  writeToClient()
+});
 
 
 /*  500: 695

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src='file:///android_asset/js/jquery.min.js'></script>
+  <script src='file:///android_asset/js/bootstrap.min.js'></script>
+  <script src="file:///android_asset/js/abcjs_basic_midi_3.1.4-min.js"></script>
+  <script src="file:///android_asset/js/abcjs_ext_scala-opt.js"></script>
+
+  <link rel="stylesheet" href="file:///android_asset/css/bootstrap.min.css">
+  <link rel="stylesheet" href="file:///android_asset/css/styles.css">
+</head>
+
+<body>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">Jazz Scales</a>
+      </div>
+      <ul id="main-navbar" class="nav navbar-nav">
+        <li data-toggle="dropdown" class="active" id='home'>
+          <a href="#">Home</a>
+        </li>
+
+        <li data-toggle="dropdown" id='all'>
+          <a class="dropdown-toggle" data-toggle="dropdown"href="#">All</a>
+        </li>
+
+        <li data-toggle="dropdown" id='transpose'>
+          <a class="dropdown-toggle" data-toggle="dropdown"href="#">Transpose</a>
+        </li>
+
+        <li data-toggle="dropdown" id='genBlockedChord'>
+          <a class="dropdown-toggle" data-toggle="dropdown"href="#">Block Chord</a>
+        </li>
+
+      </ul>
+    </div>
+  </nav>
+
+  <div class='container-fluid'>
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <h1 id='musicID'> </h1>
+        <div id='music'></div>
+      </div>
+    </div>
+  </div>
+</body>
+
+<!--script>
+$('#main-navbar li').on('click', function () {
+    $('#main-navbar .active').attr("class", ""); 
+    $('#'+this.id).attr("class", "active")
+});
+</script-->
+<script src='file:///android_asset/js/jazz_interface.js'></script>
+
+
+</html>

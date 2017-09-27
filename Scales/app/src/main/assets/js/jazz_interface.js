@@ -9,29 +9,29 @@ glob = {'path_to_jazz_orig': 'file:///android_asset/json/jazzData_orig.json',
         'musicID': null,
         'lists': null,
         'collections': null,
-        'all': null,
-        'fileContent': null};
+        'json': null};
 
 // Read jazzData immediately
 if (glob.collections === null ) { 
-  glob.all = readFile()
-  alert("hi")
+  glob.json = readFile()
 }
 
+// Initialize Home to be the active button
 $('#main-navbar li').on('click', function () {
     $('#main-navbar .active').attr("class", ""); 
     $('#'+this.id).attr("class", "active");
-    //app.makeTost("Hi!", false)
 });
 
+// Transpose the music snippet to key
 function transpose(key) {
   glob.music = util.transpose(glob.music, key);
   $('#musicID').text(glob.musicID + ` (in ${key})`)
   ABCJS.renderAbc('music', glob.music);
 }
 
+// Filter Music json by type and name (should be unique)
 function filterMusic(type, name) {
-  var out = glob.all.filter(function(x) {return type==x.type && name==x.name});
+  var out = glob.json.filter(function(x) {return type==x.type && name==x.name});
   if (out.length == 0) {
     out = ""
   } else {
@@ -40,34 +40,35 @@ function filterMusic(type, name) {
   return out
 }
 
+// show Music by type and name
 function showMusic(type, name) {
-  glob.music = '%%staffwidth 500\n' + filterMusic(type, name);
-  glob.musicID = name + " " + type
+  var staffWidth = $('#music').width() * .7;
+  glob.music = "%%staffwidth " + staffWidth + "\n" + filterMusic(type, name);
+  glob.musicID = name + " " + type //+ staffWidth
   console.log(glob.music)
-  $('#musicID').text(name + " " + type)
+  $('#musicID').text(glob.musicID)
   ABCJS.renderAbc('music', glob.music);
 }
 
 
-function genMenuItem(item) {
-  return `
-    <li role="presentation"><a role="menuitem" tabindex="-1" 
-        onclick='showMusic("${item.type}","${item.name}")'>
-      ${item.name + " " + item.type}
-    </a></li>
-  `;
-}
-
+// Generate the list of available music when button 'All' is clicked
 $('#all').on('click', function () {
   if ($('#all ul').length == 0) {
     $('#all').append('<ul class="dropdown-menu"></ui>')
-    for (var i in glob.all) {
-      var item = glob.all[i]
-      $('#all ul').append(genMenuItem(item))
+    for (var i in glob.json) {
+      var item = glob.json[i]
+      $('#all ul').append(`
+      <li role="presentation"><a role="menuitem" tabindex="-1"
+        onclick='showMusic("${item.type}","${item.name}")'>
+        ${item.name + " " + item.type}
+      </a></li>
+      `)
     }
   }
 });
 
+
+// When 'Transpose' is clicked, show list of available keys
 $('#transpose').on('click', function () {
   if ($('#transpose ul').length == 0) {
     $('#transpose').append('<ul class="dropdown-menu"></ui>')
@@ -82,23 +83,18 @@ $('#transpose').on('click', function () {
   }
 });
 
-
-
+// Add, Delete, Remove Music /////////////////////////////////////
 function fillTextArea(music) {
-  $('#edit').val(music);
+  $('textarea').val(music);
 }
-
 function editMusic() {
-  //document.getElementById('edit').setAttribute('style', 'display:inline');
-  $('#edit').setAttribute('style', 'display:inline');
+  $('textarea').setAttribute('style', 'display:inline');
 }
-
 function quitEditMusic() {
-  $('#edit').setAttribute('style', 'display:none');
+  $('textarea').setAttribute('style', 'display:none');
 }
-
 function getMusic() {
-  return $('#edit').val();
+  return $('textarea').val();
 }
 
 function renderMusic() {
@@ -108,12 +104,22 @@ function renderMusic() {
   ABCJS.renderAbc('music', music);
 }
 
+// Add Music when addmusic is clicked
+$('#add').on('click', function () {
+  $('#editBox').setAttribute('style', 'display:inline');
+});
+
+
+
+// Delete Music
+// Edit Music
+
 function readFile() {
   return JSON.parse(app.readFile()).jazzData;
 }
 
-function writeFile(path, data) {
-  return "NotImplemented!"
+function writeFile(data) {
+    return app.writeInternalFile(data);
 }
 
 

@@ -8,16 +8,16 @@ import android.webkit.WebViewClient
 import kotlinx.android.synthetic.main.activity_main.*
 import android.widget.Toast
 import android.webkit.JavascriptInterface
-import android.webkit.WebChromeClient
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.io.IOException
 
 
 class MainActivity : AppCompatActivity() {
 
     private val url = "file:///android_asset/index.html"
-    private val defaultJazzDataPath = "json/jazzData_orig.json"
-    private val internalStorageFilename = "jazzScalesData.txt"
+    private val defaultJazzDataPath = "json/jazzData_orig.json" // relative path from file:///android_asset
+    private val internalStorageFilename = "jazzScalesData.json" // relative to internal storage for app
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,22 +28,34 @@ class MainActivity : AppCompatActivity() {
         wvScore.webViewClient = WebViewClient() // opens in activity, instead of new window
         wvScore.loadUrl(url)
         wvScore.addJavascriptInterface(WebViewJavaScriptInterface(this), "app");
-        //wvScore.webChromeClient = WebChromeClient()
     }
 
+    // See Example:
+    // https://stackoverflow.com/questions/22895140/call-android-methods-from-javascript
     inner class WebViewJavaScriptInterface
     (private val context: Context) {
 
         @JavascriptInterface
-        fun makeToast(message: String, lengthLong: Boolean) {
-            Toast.makeText(context, message, if (lengthLong) Toast.LENGTH_LONG else Toast.LENGTH_SHORT).show()
+        fun readFile():String {
+            val s = if (File(filesDir, internalStorageFilename).exists()) {
+                Log.d("HERE", "reading from internal storage:")
+                readFromInternalStorage(internalStorageFilename)
+            } else {
+                Log.d("HERE", "reading from default path:")
+                readResource(defaultJazzDataPath)
+            }
+            Log.d("HERE", s)
+            return s
         }
 
         @JavascriptInterface
-        fun readFile():String {
-            val s = readResource(defaultJazzDataPath)
-            Log.d("HERE", s)
-            return s
+        fun readInternalFile():String {
+            return readFromInternalStorage(internalStorageFilename)
+        }
+
+        @JavascriptInterface
+        fun writeInternalFile(text:String) {
+            return writeToInternalStorage(internalStorageFilename, text)
         }
     }
 
@@ -66,4 +78,23 @@ class MainActivity : AppCompatActivity() {
         return baos.toString()
     }
 
+    private fun writeToInternalStorage(filename: String, text: String) {
+        val outputStream = openFileOutput(filename, Context.MODE_PRIVATE)
+        outputStream.write(text.toByteArray())
+        outputStream.close()
+    }
+
+    private fun readFromInternalStorage(filename: String): String {
+        val fin = openFileInput(filename)
+
+        var c = fin.read()
+        var s = ""
+        while (c > -1) {
+            c = fin.read()
+            s += Character.toString(c.toChar())
+        }
+        fin.close()
+
+        return s
+    }
 }

@@ -34,16 +34,16 @@
           <a class="dropdown-toggle" data-toggle="dropdown"href="#">Block Chord</a>
         </li>
 
-        <li data-toggle="dropdown" id='add'>
-          <a class="dropdown-toggle" data-toggle="dropdown"href="#">Add</a>
+        <li id='add'>
+          <a href="#">Add</a>
         </li>
 
-        <li data-toggle="dropdown" id='delete'>
-          <a class="dropdown-toggle" data-toggle="dropdown"href="#">Delete</a>
+        <li id='delete'>
+          <a href="#">Delete</a>
         </li>
 
-        <li data-toggle="dropdown" id='edit'>
-          <a class="dropdown-toggle" data-toggle="dropdown"href="#">Edit</a>
+        <li id='edit'>
+          <a href="#">Edit</a>
         </li>
       </ul>
     </div>
@@ -52,23 +52,15 @@
   <div class='container-fluid'>
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <h1 id='musicID'> </h1>
+        <h1 id='musicID'></h1>
         <div id='music'></div>
+        <!--FIXME-->
+        <textarea style='width:100%;border:solid 5px #ccc;display:none;'></textarea>
       </div>
-      <!-- FIXME -->
-      <textarea id='editBox' rows='1' style='display:none'></textarea>
     </div>
   </div>
 
 </body>
 
-<!--script>
-$('#main-navbar li').on('click', function () {
-    $('#main-navbar .active').attr("class", ""); 
-    $('#'+this.id).attr("class", "active")
-});
-</script-->
 <script src='file:///android_asset/js/jazz_interface.js'></script>
-
-
 </html>

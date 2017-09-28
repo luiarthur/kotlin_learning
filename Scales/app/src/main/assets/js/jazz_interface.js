@@ -4,8 +4,7 @@
  */
 
 // Global Variables Dictionary 
-glob = {'path_to_jazz_orig': 'file:///android_asset/json/jazzData_orig.json',
-        'music': null,
+glob = {'music': null,
         'musicID': null,
         'lists': null,
         'collections': null,
@@ -15,6 +14,11 @@ glob = {'path_to_jazz_orig': 'file:///android_asset/json/jazzData_orig.json',
 if (glob.collections === null ) { 
   glob.json = readFile()
 }
+
+// Hide textarea
+//$('#taEdit').append($('#taEdit').style);
+//$('#taEdit').style.display = 'none';
+//$('#taEdit').setAttribute('style', 'display:none;');
 
 // Initialize Home to be the active button
 $('#main-navbar li').on('click', function () {
@@ -83,6 +87,12 @@ $('#transpose').on('click', function () {
   }
 });
 
+// Add Music when addmusic is clicked
+$('#add').on('click', function () {
+  $('textarea').style.display = 'inline';
+});
+
+
 // Add, Delete, Remove Music /////////////////////////////////////
 function fillTextArea(music) {
   $('textarea').val(music);
@@ -103,11 +113,6 @@ function renderMusic() {
   console.log(music)
   ABCJS.renderAbc('music', music);
 }
-
-// Add Music when addmusic is clicked
-$('#add').on('click', function () {
-  $('#editBox').setAttribute('style', 'display:inline');
-});
 
 
 

@@ -8,6 +8,7 @@ import android.webkit.WebViewClient
 import kotlinx.android.synthetic.main.activity_main.*
 import android.widget.Toast
 import android.webkit.JavascriptInterface
+import android.webkit.WebChromeClient
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         wvScore.webViewClient = WebViewClient() // opens in activity, instead of new window
         wvScore.loadUrl(url)
         wvScore.addJavascriptInterface(WebViewJavaScriptInterface(this), "app");
+        //wvScore.setWebChromeClient(WebChromeClient());
     }
 
     // See Example:

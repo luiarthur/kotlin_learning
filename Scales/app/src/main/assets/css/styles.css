@@ -1,1 +1,17 @@
+textarea {
+  width:100%;
+  border:solid 5px #ccc;
+}
 
+input {
+  border:solid 1px #ccc;
+  width:30%;
+}
+
+.hide {
+  display:none;
+}
+
+.unhide {
+  display:inline;
+}

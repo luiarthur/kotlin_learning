@@ -89,7 +89,16 @@ $('#transpose').on('click', function () {
 
 // Add Music when addmusic is clicked
 $('#add').on('click', function () {
-  $('textarea').style.display = 'inline';
+  $('.toggle-hide').toggleClass('hide unhide')
+  //$('textarea').toggleClass('hide unhide')
+  //$('input').toggleClass('hide unhide')
+  //$('p').toggleClass('hide unhide')
+  // This doesn't work in android...
+  //$'(textarea').style.display = 'inline';
+
+  if ($('#taEdit').attr('class') == 'hide') {
+    // save
+  }
 });
 
 

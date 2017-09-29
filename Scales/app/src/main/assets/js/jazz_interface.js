@@ -3,6 +3,8 @@
  *   - abcjs_basic_3.0-min.js
  */
 
+app.restoreAppDefaults()
+
 // Global Variables Dictionary 
 glob = {'music': null,
         'musicID': null,
@@ -87,46 +89,6 @@ $('#transpose').on('click', function () {
   }
 });
 
-// Add Music when addmusic is clicked
-$('#add').on('click', function () {
-  $('.toggle-hide').toggleClass('hide unhide')
-  //$('textarea').toggleClass('hide unhide')
-  //$('input').toggleClass('hide unhide')
-  //$('p').toggleClass('hide unhide')
-  // This doesn't work in android...
-  //$'(textarea').style.display = 'inline';
-
-  if ($('#taEdit').attr('class') == 'hide') {
-    // save
-  }
-});
-
-
-// Add, Delete, Remove Music /////////////////////////////////////
-function fillTextArea(music) {
-  $('textarea').val(music);
-}
-function editMusic() {
-  $('textarea').setAttribute('style', 'display:inline');
-}
-function quitEditMusic() {
-  $('textarea').setAttribute('style', 'display:none');
-}
-function getMusic() {
-  return $('textarea').val();
-}
-
-function renderMusic() {
-  var staffWidth = $('#edit').width() * 0.75;
-  var music = '%%staffwidth ' + staffWidth + '\n' + getMusic();
-  console.log(music)
-  ABCJS.renderAbc('music', music);
-}
-
-
-
-// Delete Music
-// Edit Music
 
 function readFile() {
   return JSON.parse(app.readFile()).jazzData;
@@ -135,6 +97,59 @@ function readFile() {
 function writeFile(data) {
     return app.writeInternalFile(data);
 }
+
+
+// Add, Delete, Remove Music /////////////////////////////////////
+function fillTextArea(music) {
+  $('textarea').val(music);
+}
+function editMusic() {
+  // This doesn't work in android...
+  //$'(textarea').style.display = 'inline';
+  $('.toggle-hide').toggleClass('hide unhide')
+}
+function quitEditMusic() {
+  $('.toggle-hide').toggleClass('hide unhide');
+  // save music
+}
+function getMusic() {
+  return $('#taEdit').val();
+}
+
+function renderMusic() {
+  var staffWidth = $('#music').width() * 0.7;
+  var music = '%%staffwidth ' + staffWidth + '\n' + getMusic();
+  ABCJS.renderAbc('music', music);
+}
+
+
+// Add Music when addmusic is clicked
+$('#add').on('click', function () {
+  editMusic()
+
+  // refresh on change
+  $('#taEdit').on('keyup input', function () {
+    renderMusic()
+  });
+
+  // save
+  $('#save').on('click', function() {
+    var music = getMusic()
+
+    //glob.json.push({
+    //  "type": $("#inputType").value(), 
+    //  "name": $("#inputName").value(),
+    //  "music": music});
+
+    writeFile(' {"jazzData":' + JSON.stringify(glob.json) + "}")
+    quitEditMusic()
+  });
+});
+
+
+
+// Delete Music
+// Edit Music
 
 
 

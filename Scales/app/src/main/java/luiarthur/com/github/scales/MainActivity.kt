@@ -57,7 +57,15 @@ class MainActivity : AppCompatActivity() {
 
         @JavascriptInterface
         fun writeInternalFile(text:String) {
-            return writeToInternalStorage(internalStorageFilename, text)
+            Log.d("HERE", "this was written to internal\n" + text)
+            writeToInternalStorage(internalStorageFilename, text)
+        }
+
+        @JavascriptInterface
+        fun restoreAppDefaults() {
+            val file = File(filesDir, internalStorageFilename)
+            file.delete()
+            Log.d("HERE", "Deleted the file")
         }
     }
 
@@ -99,4 +107,6 @@ class MainActivity : AppCompatActivity() {
 
         return s
     }
+
+
 }

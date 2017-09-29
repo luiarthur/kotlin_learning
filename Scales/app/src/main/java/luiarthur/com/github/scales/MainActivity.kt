@@ -6,9 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.webkit.WebViewClient
 import kotlinx.android.synthetic.main.activity_main.*
-import android.widget.Toast
 import android.webkit.JavascriptInterface
-import android.webkit.WebChromeClient
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
@@ -66,6 +64,11 @@ class MainActivity : AppCompatActivity() {
             val file = File(filesDir, internalStorageFilename)
             file.delete()
             Log.d("HERE", "Deleted the file")
+        }
+
+        @JavascriptInterface
+        fun printLog(s: String) {
+            Log.d("HERE", s)
         }
     }
 

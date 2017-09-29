@@ -1,3 +1,12 @@
+.navbar-header {
+  background-color: #101010;
+}
+
+#brandText {
+  color: white;
+  font-weight: bold;
+}
+
 textarea {
   width:100%;
   border:solid 5px #ccc;

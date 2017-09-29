@@ -3,7 +3,27 @@
  *   - abcjs_basic_3.0-min.js
  */
 
-app.restoreAppDefaults()
+//app.restoreAppDefaults()
+
+$('#jazzScales').on('click', function () {
+  $('#main-navbar').toggleClass('hide unhide')
+})
+
+function drop(s,n=1) {
+  return s.substring(0, s.length - n);
+}
+
+function readFile() {
+  var content = drop(app.readFile(),1) // drop last character for android
+  var jsonData = JSON.parse(content).jazzData;
+  return jsonData;
+}
+
+function writeFile(data) {
+    data = " " + data // pad with space for android
+    return app.writeInternalFile(data);
+}
+
 
 // Global Variables Dictionary 
 glob = {'music': null,
@@ -16,11 +36,6 @@ glob = {'music': null,
 if (glob.collections === null ) { 
   glob.json = readFile()
 }
-
-// Hide textarea
-//$('#taEdit').append($('#taEdit').style);
-//$('#taEdit').style.display = 'none';
-//$('#taEdit').setAttribute('style', 'display:none;');
 
 // Initialize Home to be the active button
 $('#main-navbar li').on('click', function () {
@@ -58,17 +73,20 @@ function showMusic(type, name) {
 
 
 // Generate the list of available music when button 'All' is clicked
-$('#all').on('click', function () {
-  if ($('#all ul').length == 0) {
-    $('#all').append('<ul class="dropdown-menu"></ui>')
+$('#select').on('click', function () {
+  if ($('#select ul').length == 0) {
+    $('#select').append('<ul class="dropdown-menu"></ui>')
     for (var i in glob.json) {
       var item = glob.json[i]
-      $('#all ul').append(`
+      $('#select ul').append(`
       <li role="presentation"><a role="menuitem" tabindex="-1"
         onclick='showMusic("${item.type}","${item.name}")'>
         ${item.name + " " + item.type}
       </a></li>
       `)
+      // on long click
+      //   allow user to edit or delete music selected
+      //https://www.google.com/search?q=js+long+press&oq=js+long+press&aqs=chrome.0.0l4.3273j0j9&sourceid=chrome&ie=UTF-8
     }
   }
 });
@@ -89,14 +107,6 @@ $('#transpose').on('click', function () {
   }
 });
 
-
-function readFile() {
-  return JSON.parse(app.readFile()).jazzData;
-}
-
-function writeFile(data) {
-    return app.writeInternalFile(data);
-}
 
 
 // Add, Delete, Remove Music /////////////////////////////////////
@@ -135,20 +145,42 @@ $('#add').on('click', function () {
   // save
   $('#save').on('click', function() {
     var music = getMusic()
+    app.printLog("got music")
 
-    //glob.json.push({
-    //  "type": $("#inputType").value(), 
-    //  "name": $("#inputName").value(),
-    //  "music": music});
+    var inType = $("#inputType").val()
+    var inName = $("#inputName").val()
+    var inList = $("#inputList").val()
 
-    writeFile(' {"jazzData":' + JSON.stringify(glob.json) + "}")
+    if (inType.trim() == "") {
+      throw new Error("No type provided.");
+    }
+
+    if (inName.trim() == "") {
+      throw new Error("No Name provided.");
+    }
+
+    if (inList.trim() == "") {
+      inList = []
+    }
+
+    glob.json.push({
+      "type": inType,
+      "name": inName,
+      "list": inList,
+      "music": music});
+
+    var s = JSON.stringify(glob.json)
+
+    writeFile(' {"jazzData":' + s + "}")
+
+    app.printLog("music written")
     quitEditMusic()
   });
 });
 
 
-
 // Delete Music
+
 // Edit Music
 
 

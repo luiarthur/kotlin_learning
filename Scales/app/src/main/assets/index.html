@@ -13,17 +13,13 @@
 <body>
   <nav class="navbar navbar-default">
     <div class="container-fluid">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="#">Jazz Scales</a>
+      <div class="navbar-header" id='jazzScales'>
+        <a class="navbar-brand" href="#" id='brandText'>Jazz Scales</a>
       </div>
 
-      <ul id="main-navbar" class="nav navbar-nav">
-        <li data-toggle="dropdown" class="active" id='home'>
-          <a href="#">Home</a>
-        </li>
-
-        <li data-toggle="dropdown" id='all'>
-          <a class="dropdown-toggle" data-toggle="dropdown"href="#">All</a>
+      <ul id="main-navbar" class="nav navbar-nav hide">
+        <li data-toggle="dropdown" id='select'>
+          <a class="dropdown-toggle" data-toggle="dropdown"href="#">Select</a>
         </li>
 
         <li data-toggle="dropdown" id='transpose'>
@@ -38,13 +34,13 @@
           <a href="#">Add</a>
         </li>
 
-        <li id='delete'>
+        <!--li id='delete'>
           <a href="#">Delete</a>
         </li>
 
         <li id='edit'>
           <a href="#">Edit</a>
-        </li>
+        </li-->
       </ul>
     </div>
   </nav>
@@ -57,14 +53,13 @@
 
         <textarea id='taEdit' class='toggle-hide hide'></textarea>
 
-        <p class='toggle-hide hide'>Type: </p>
-        <input id='inputType' class='toggle-hide hide'></input>
-
-        <p class='toggle-hide hide'>Name: </p>
-        <input id='inputName' class='toggle-hide hide'></input>
-
-        <button type="button" id='save' class='toggle-hide hide'>Save</button>
-
+        <form class='toggle-hide hide'>
+          Type: <br><input id='inputType'><br>
+          Name: <br><input id='inputName'><br>
+          List: <br><input id='inputList'><br>
+          <!--FIXME: Make Save button outside of form-->
+          <br><input type='submit' value='Save' id='save'><br>
+        </form>
       </div>
     </div>
   </div>

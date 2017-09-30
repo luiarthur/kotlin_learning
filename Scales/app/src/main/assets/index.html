@@ -33,14 +33,6 @@
         <li id='add'>
           <a href="#">Add</a>
         </li>
-
-        <!--li id='delete'>
-          <a href="#">Delete</a>
-        </li>
-
-        <li id='edit'>
-          <a href="#">Edit</a>
-        </li-->
       </ul>
     </div>
   </nav>
@@ -53,13 +45,14 @@
 
         <textarea id='taEdit' class='toggle-hide hide'></textarea>
 
-        <form class='toggle-hide hide'>
+        <div class='toggle-hide hide'>
+        <form>
           Type: <br><input id='inputType'><br>
           Name: <br><input id='inputName'><br>
           List: <br><input id='inputList'><br>
-          <!--FIXME: Make Save button outside of form-->
-          <br><input type='submit' value='Save' id='save'><br>
         </form>
+        <br><button id='save'>Save</button><br>
+        </div>
       </div>
     </div>
   </div>

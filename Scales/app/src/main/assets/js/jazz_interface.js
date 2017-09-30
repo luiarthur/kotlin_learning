@@ -71,6 +71,17 @@ function showMusic(type, name) {
   ABCJS.renderAbc('music', glob.music);
 }
 
+function appendToSelect(iType, iName) {
+  $('#select ul').append(`
+  <li role="presentation"><a role="menuitem" tabindex="-1"
+    onclick='showMusic("${iType}","${iName}")'>
+    ${iName + " " + iType}
+  </a></li>
+  `)
+   // on long click
+   //   allow user to edit or delete music selected
+   //https://www.google.com/search?q=js+long+press&oq=js+long+press&aqs=chrome.0.0l4.3273j0j9&sourceid=chrome&ie=UTF-8
+}
 
 // Generate the list of available music when button 'All' is clicked
 $('#select').on('click', function () {
@@ -78,15 +89,7 @@ $('#select').on('click', function () {
     $('#select').append('<ul class="dropdown-menu"></ui>')
     for (var i in glob.json) {
       var item = glob.json[i]
-      $('#select ul').append(`
-      <li role="presentation"><a role="menuitem" tabindex="-1"
-        onclick='showMusic("${item.type}","${item.name}")'>
-        ${item.name + " " + item.type}
-      </a></li>
-      `)
-      // on long click
-      //   allow user to edit or delete music selected
-      //https://www.google.com/search?q=js+long+press&oq=js+long+press&aqs=chrome.0.0l4.3273j0j9&sourceid=chrome&ie=UTF-8
+      appendToSelect(item.type, item.name)
     }
   }
 });
@@ -172,6 +175,7 @@ $('#add').on('click', function () {
     var s = JSON.stringify(glob.json)
 
     writeFile(' {"jazzData":' + s + "}")
+    appendToSelect(inType, inName)
 
     app.printLog("music written")
     quitEditMusic()

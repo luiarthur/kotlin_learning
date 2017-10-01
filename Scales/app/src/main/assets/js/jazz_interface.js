@@ -24,6 +24,10 @@ function writeFile(data) {
     return app.writeInternalFile(data);
 }
 
+function saveJson(globJson) {
+  var s = JSON.stringify(globJson);
+  writeFile(' {"jazzData":' + s + "}");
+}
 
 // Global Variables Dictionary 
 glob = {'music': null,
@@ -71,40 +75,6 @@ function showMusic(type, name) {
   ABCJS.renderAbc('music', glob.music);
 }
 
-//function listenLongClick(tagObj, funcToExecute) {
-//  var timer;
-//  var longTime = 1 * 1000; // 1 second or 1000 milli-seconds
-//
-//  tagObj.on("mousedown touchstart", function(){
-//    timer = setTimeout(funcToExecute , longTime);
-//  }).on("mouseup touchend",function(){
-//    //app.printLog(timer / 1000 + "seconds has passed (mouseup).");
-//    clearTimeout(timer);
-//  });
-//}
-
-function addEditDropdown(tagObj) {
-  // make button open the menu
-  tagObj.contextMenu();
-
-  $.contextMenu({
-      selector: tagObj.attr('id'), 
-      trigger: 'none',
-      callback: function(key, options) {
-          var m = "clicked: " + key;
-          window.console && console.log(m) || alert(m); 
-      },
-      items: {
-          "edit": {name: "Edit", icon: "edit"},
-          "cut": {name: "Cut", icon: "cut"},
-          "copy": {name: "Copy", icon: "copy"},
-          "paste": {name: "Paste", icon: "paste"},
-          "delete": {name: "Delete", icon: "delete"},
-          "sep1": "---------",
-          "quit": {name: "Quit", icon: function($element, key, item){ return 'context-menu-icon context-menu-icon-quit'; }}
-      }
-  });
-}
 
 function appendToSelect(iType, iName) {
   var thisID = iName+iType
@@ -120,39 +90,43 @@ function appendToSelect(iType, iName) {
     
   var thisTag = $("#"+thisID)
 
-  //thisTag.on('contextmenu', function() {
-  //  app.printLog("Long time has passed (long press).");
-  //  addEditDropdown(thisTag);
-  //});
   var menu = [{
-          name: 'create',
-          title: 'create button',
+          name: 'Edit',
+          title: 'edit button',
           fun: function () {
-              app.printLog('i am add button')
+            app.printLog('Clicked Edit Button');
+            // TODO
+            
+            // 1. open edit box
+            // 2. on keyup, refresh music
+            // 3. on click save, save music
           }
       }, {
-          name: 'update',
-          title: 'update button',
-          fun: function () {
-              alert('i am update button')
-          }
-      }, {
-          name: 'delete',
+          name: 'Delete',
           title: 'delete button',
           fun: function () {
-              alert('i am delete button')
+            app.printLog('Clicked Delete Button')
+
+            // change the global json
+            glob.json = glob.json.filter(function(x) {
+              return (x.type != iType || x.name != iName);
+            });
+
+            // remove this tag from selection
+            thisTag.remove();
+            
+            // TODO: Clean Display
+            //if (thisID == $("#musicID").attr("id")) {
+            //  $("#musicID").text("");
+            //  ABCJS.renderAbc('music', '');
+            //}
+
+            // TODO: Promp --- ARE YOU SURE YOU WANT TO DELETE?
+            saveJson(glob.json);
           }
       }];
    
   thisTag.contextMenu(menu, {triggerOn:"click"});
-
-  //listenLongClick(thisTag, function() {
-  //  app.printLog("Long time has passed (long press).");
-  //  addEditDropdown(thisTag);
-  //});
-
-  // on long click:  allow user to edit or delete music selected
-  //https://www.google.com/search?q=js+long+press&oq=js+long+press&aqs=chrome.0.0l4.3273j0j9&sourceid=chrome&ie=UTF-8
 }
 
 // Generate the list of available music when button 'All' is clicked
@@ -244,9 +218,10 @@ $('#add').on('click', function () {
       "list": inList,
       "music": music});
 
-    var s = JSON.stringify(glob.json)
+    //var s = JSON.stringify(glob.json)
+    //writeFile(' {"jazzData":' + s + "}")
+    saveJson(glob.json);
 
-    writeFile(' {"jazzData":' + s + "}")
     appendToSelect(inType, inName)
 
     app.printLog("music written")

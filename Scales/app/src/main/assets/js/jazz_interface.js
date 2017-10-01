@@ -24,10 +24,35 @@ function writeFile(data) {
     return app.writeInternalFile(data);
 }
 
-function saveJson(globJson) {
-  var s = JSON.stringify(globJson);
+function saveJson(jsonObj) {
+  var s = JSON.stringify(jsonObj);
   writeFile(' {"jazzData":' + s + "}");
 }
+
+// Add, Delete, Remove Music /////////////////////////////////////
+function fillTextArea(music) {
+  $('textarea').val(music);
+}
+function editMusic() {
+  // This doesn't work in android...
+  //$'(textarea').style.display = 'inline';
+  $('.toggle-hide').toggleClass('hide unhide')
+}
+function quitEditMusic() {
+  $('.toggle-hide').toggleClass('hide unhide');
+  // save music
+}
+function getMusic() {
+  return $('#taEdit').val();
+}
+
+function renderMusic() {
+  var staffWidth = $('#music').width() * 0.7;
+  var music = '%%staffwidth ' + staffWidth + '\n' + getMusic();
+  ABCJS.renderAbc('music', music);
+}
+// End of Add, Delete, Remove Music /////////////////////////////////
+
 
 // Global Variables Dictionary 
 glob = {'music': null,
@@ -96,10 +121,61 @@ function appendToSelect(iType, iName) {
           fun: function () {
             app.printLog('Clicked Edit Button');
             // TODO
+
+            // 0. get index of current item
+            var idx = glob.json.findIndex(function(x) {
+              return x.type == iType && x.name == iName;
+            });
+
+            var iList = glob.json[idx].lists;
             
-            // 1. open edit box
-            // 2. on keyup, refresh music
-            // 3. on click save, save music
+            //// 1. open edit box
+            //editMusic();
+            //$("#inputType").val(iType); 
+            //$("#inputName").val(iName); 
+            //$("#inputList").val(iList); 
+
+            //// 2. on keyup, refresh music
+            //// refresh on change
+            //$('#taEdit').on('keyup input', function () {
+            //  renderMusic()
+            //});
+
+            //// 3. on click save, save music
+            //// save
+            //$('#save').on('click', function() {
+            //  var music = getMusic()
+            //  app.printLog("got music")
+
+            //  var inType = $("#inputType").val()
+            //  var inName = $("#inputName").val()
+            //  var inList = $("#inputList").val()
+
+            //  if (inType.trim() == "") {
+            //    throw new Error("No type provided.");
+            //  }
+
+            //  if (inName.trim() == "") {
+            //    throw new Error("No Name provided.");
+            //  }
+
+            //  if (inList.trim() == "") {
+            //    inList = []
+            //  }
+
+            //  glob.json.push({
+            //    "type": inType,
+            //    "name": inName,
+            //    "list": inList,
+            //    "music": music});
+
+            //  saveJson(glob.json);
+
+            //  appendToSelect(inType, inName)
+
+            //  app.printLog("music written")
+            //  quitEditMusic()
+            //}); // end of on click save
           }
       }, {
           name: 'Delete',
@@ -158,31 +234,6 @@ $('#transpose').on('click', function () {
 
 
 
-// Add, Delete, Remove Music /////////////////////////////////////
-function fillTextArea(music) {
-  $('textarea').val(music);
-}
-function editMusic() {
-  // This doesn't work in android...
-  //$'(textarea').style.display = 'inline';
-  $('.toggle-hide').toggleClass('hide unhide')
-}
-function quitEditMusic() {
-  $('.toggle-hide').toggleClass('hide unhide');
-  // save music
-}
-function getMusic() {
-  return $('#taEdit').val();
-}
-
-function renderMusic() {
-  var staffWidth = $('#music').width() * 0.7;
-  var music = '%%staffwidth ' + staffWidth + '\n' + getMusic();
-  ABCJS.renderAbc('music', music);
-}
-// End of Add, Delete, Remove Music /////////////////////////////////
-
-
 // Add Music when addmusic is clicked
 $('#add').on('click', function () {
   editMusic()
@@ -229,12 +280,6 @@ $('#add').on('click', function () {
     quitEditMusic()
   });
 });
-
-
-// Delete Music
-
-// Edit Music
-
 
 
 /*  500: 695

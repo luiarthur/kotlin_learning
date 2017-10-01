@@ -180,6 +180,7 @@ function renderMusic() {
   var music = '%%staffwidth ' + staffWidth + '\n' + getMusic();
   ABCJS.renderAbc('music', music);
 }
+// End of Add, Delete, Remove Music /////////////////////////////////
 
 
 // Add Music when addmusic is clicked

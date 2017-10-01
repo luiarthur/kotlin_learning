@@ -65,22 +65,94 @@ function filterMusic(type, name) {
 function showMusic(type, name) {
   var staffWidth = $('#music').width() * .7;
   glob.music = "%%staffwidth " + staffWidth + "\n" + filterMusic(type, name);
-  glob.musicID = name + " " + type //+ staffWidth
-  console.log(glob.music)
-  $('#musicID').text(glob.musicID)
+  glob.musicID = name + " " + type;
+  console.log(glob.music);
+  $('#musicID').text(glob.musicID);
   ABCJS.renderAbc('music', glob.music);
 }
 
+//function listenLongClick(tagObj, funcToExecute) {
+//  var timer;
+//  var longTime = 1 * 1000; // 1 second or 1000 milli-seconds
+//
+//  tagObj.on("mousedown touchstart", function(){
+//    timer = setTimeout(funcToExecute , longTime);
+//  }).on("mouseup touchend",function(){
+//    //app.printLog(timer / 1000 + "seconds has passed (mouseup).");
+//    clearTimeout(timer);
+//  });
+//}
+
+function addEditDropdown(tagObj) {
+  // make button open the menu
+  tagObj.contextMenu();
+
+  $.contextMenu({
+      selector: tagObj.attr('id'), 
+      trigger: 'none',
+      callback: function(key, options) {
+          var m = "clicked: " + key;
+          window.console && console.log(m) || alert(m); 
+      },
+      items: {
+          "edit": {name: "Edit", icon: "edit"},
+          "cut": {name: "Cut", icon: "cut"},
+          "copy": {name: "Copy", icon: "copy"},
+          "paste": {name: "Paste", icon: "paste"},
+          "delete": {name: "Delete", icon: "delete"},
+          "sep1": "---------",
+          "quit": {name: "Quit", icon: function($element, key, item){ return 'context-menu-icon context-menu-icon-quit'; }}
+      }
+  });
+}
+
 function appendToSelect(iType, iName) {
+  var thisID = iName+iType
+
   $('#select ul').append(`
-  <li role="presentation"><a role="menuitem" tabindex="-1"
-    onclick='showMusic("${iType}","${iName}")'>
-    ${iName + " " + iType}
-  </a></li>
-  `)
-   // on long click
-   //   allow user to edit or delete music selected
-   //https://www.google.com/search?q=js+long+press&oq=js+long+press&aqs=chrome.0.0l4.3273j0j9&sourceid=chrome&ie=UTF-8
+    <li role="presentation" id="${thisID}">
+      <a role="menuitem" tabindex="-1"
+        onclick='showMusic("${iType}","${iName}")'>
+        ${iName + " " + iType}
+      </a>
+    </li>
+  `);
+    
+  var thisTag = $("#"+thisID)
+
+  //thisTag.on('contextmenu', function() {
+  //  app.printLog("Long time has passed (long press).");
+  //  addEditDropdown(thisTag);
+  //});
+  var menu = [{
+          name: 'create',
+          title: 'create button',
+          fun: function () {
+              app.printLog('i am add button')
+          }
+      }, {
+          name: 'update',
+          title: 'update button',
+          fun: function () {
+              alert('i am update button')
+          }
+      }, {
+          name: 'delete',
+          title: 'delete button',
+          fun: function () {
+              alert('i am delete button')
+          }
+      }];
+   
+  thisTag.contextMenu(menu, {triggerOn:"click"});
+
+  //listenLongClick(thisTag, function() {
+  //  app.printLog("Long time has passed (long press).");
+  //  addEditDropdown(thisTag);
+  //});
+
+  // on long click:  allow user to edit or delete music selected
+  //https://www.google.com/search?q=js+long+press&oq=js+long+press&aqs=chrome.0.0l4.3273j0j9&sourceid=chrome&ie=UTF-8
 }
 
 // Generate the list of available music when button 'All' is clicked

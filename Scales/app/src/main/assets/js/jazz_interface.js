@@ -58,9 +58,19 @@ function getMusic() {
   return $('#taEdit').val();
 }
 
+function clearFields() {
+  $("#taEdit").val("K:C\n");
+  $("input").each(function () {
+    $(this).val("");
+  });
+  $("#musicID").text("");
+  renderMusic();
+}
+
 function renderMusic() {
   var staffWidth = $('#music').width() * 0.7;
   var music = '%%staffwidth ' + staffWidth + '\n' + getMusic();
+  app.printLog(music);
   ABCJS.renderAbc('music', music);
 }
 // End of Add, Delete, Remove Music /////////////////////////////////
@@ -86,8 +96,13 @@ $('#main-navbar li').on('click', function () {
 
 // Transpose the music snippet to key
 function transpose(key) {
+  app.printLog("before transpose:\n" + glob.music);
+
   glob.music = util.transpose(glob.music, key);
-  $('#musicID').text(glob.musicID + ` (in ${key})`)
+  $('#musicID').text(glob.musicID + ` (in ${key})`);
+
+  app.printLog("after transpose:\n" + glob.music);
+
   ABCJS.renderAbc('music', glob.music);
 }
 
@@ -107,11 +122,65 @@ function showMusic(type, name) {
   var staffWidth = $('#music').width() * .7;
   glob.music = "%%staffwidth " + staffWidth + "\n" + filterMusic(type, name);
   glob.musicID = name + " " + type;
-  console.log(glob.music);
   $('#musicID').text(glob.musicID);
   ABCJS.renderAbc('music', glob.music);
 }
 
+function indexOfItem(jsonObj, iType, iName) {
+  var idx = glob.json.findIndex(function(x) {
+    return x.type == iType && x.name == iName;
+  });
+  return idx;
+}
+
+function saveMusic() {
+    var music = getMusic()
+
+    // abcjs_ext check for key sig
+    var m = util.parse(music);
+    var header = m.header;
+    var text = m.text;
+    if (!/K:.*/.test(header)) {
+      music = header.trim() + '\nK:C\n' + text;
+    }
+    music = music.trim();
+
+    app.printLog("got music")
+
+    var inType = $("#inputType").val()
+    var inName = $("#inputName").val()
+    var inList = $("#inputList").val()
+
+    if (inType.trim() == "") {
+      throw new Error("No type provided.");
+    }
+
+    if (inName.trim() == "") {
+      throw new Error("No Name provided.");
+    }
+
+    if (inList.trim() == "") {
+      inList = []
+    }
+
+    var idx = indexOfItem(glob.json, inType, inName);
+    var item = {
+      "type": inType,
+      "name": inName,
+      "list": inList,
+      "music": music};
+
+    if (idx == -1) {
+      glob.json.push(item);
+      appendToSelect(inType, inName)
+    } else {
+      glob.json[idx] = item;
+    }
+
+    saveJson(glob.json);
+
+    app.printLog("music written")
+}
 
 function appendToSelect(iType, iName) {
   var thisID = iName+iType
@@ -164,48 +233,10 @@ function appendToSelect(iType, iName) {
 
             //// 3. on click save, save music
             // save
-            $('#save').on('click', function() {
-              var music = getMusic()
-              app.printLog("got music")
-
-              // abcjs_ext check for key sig
-              var m = util.parse(music);
-              var header = m.header;
-              var text = m.text;
-              if (!/K:.*/.test(header)) {
-                music = header.trim() + '\nK:C\n' + text;
-              }
-
-              var inType = $("#inputType").val()
-              var inName = $("#inputName").val()
-              var inList = $("#inputList").val()
-
-              if (inType.trim() == "") {
-                throw new Error("No type provided.");
-              }
-
-              if (inName.trim() == "") {
-                throw new Error("No Name provided.");
-              }
-
-              if (inList.trim() == "") {
-                inList = []
-              }
-
-              glob.json[idx] = {
-                "type": inType,
-                "name": inName,
-                "list": inList,
-                "music": music};
-
-              saveJson(glob.json);
-
-              // TODO: replace instead of append
-              //appendToSelect(inType, inName)
-
-              app.printLog("music written")
-              quitEditMusic()
-            }); // end of on click save
+            $('#save').on('click', function () {
+              saveMusic();
+              quitEditMusic();
+            });
           }
       }, {
           name: 'Delete',
@@ -266,58 +297,24 @@ $('#transpose').on('click', function () {
 
 // Add Music when addmusic is clicked
 $('#add').on('click', function () {
-  editMusic()
+  editMusic();
+  clearFields();
 
   // refresh on change
   $('#taEdit').on('keyup input', function () {
-    renderMusic()
+    renderMusic();
   });
 
   // save
-  $('#save').on('click', function() {
-    var music = getMusic()
-
-    // abcjs_ext check for key sig
-    var m = util.parse(music);
-    var header = m.header;
-    var text = m.text;
-    if (!/K:.*/.test(header)) {
-      music = header.trim() + '\nK:C\n' + text;
-    }
-
-    app.printLog("got music")
-
-    var inType = $("#inputType").val()
-    var inName = $("#inputName").val()
-    var inList = $("#inputList").val()
-
-    if (inType.trim() == "") {
-      throw new Error("No type provided.");
-    }
-
-    if (inName.trim() == "") {
-      throw new Error("No Name provided.");
-    }
-
-    if (inList.trim() == "") {
-      inList = []
-    }
-
-    glob.json.push({
-      "type": inType,
-      "name": inName,
-      "list": inList,
-      "music": music});
-
-    //var s = JSON.stringify(glob.json)
-    //writeFile(' {"jazzData":' + s + "}")
-    saveJson(glob.json);
-
-    appendToSelect(inType, inName)
-
-    app.printLog("music written")
-    quitEditMusic()
+  $('#save').on('click', function () {
+    saveMusic();
+    quitEditMusic();
   });
+
+});
+
+$('#cancel').on('click', function () {
+  quitEditMusic();
 });
 
 

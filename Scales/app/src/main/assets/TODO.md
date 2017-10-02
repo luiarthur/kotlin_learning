@@ -4,4 +4,7 @@
 - [ ] Default to key of C if no key signature is provided
 - [ ] Include examples and link to abc.js and abc notation sites
 - [ ] Refactor code for cleanliness
+- [ ] Currently, only uppercase ABC is allowed
+    - [ ] Eventually, provide support for lowercase ABC
+
 

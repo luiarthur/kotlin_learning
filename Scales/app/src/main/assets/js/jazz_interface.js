@@ -36,11 +36,23 @@ function fillTextArea(music) {
 function editMusic() {
   // This doesn't work in android...
   //$'(textarea').style.display = 'inline';
-  $('.toggle-hide').toggleClass('hide unhide')
+
+  // better
+  //$('.toggle-hide').toggleClass('hide unhide');
+
+  // best
+  if ($('.toggle-hide').hasClass('hide')) {
+    $('.toggle-hide').toggleClass('hide unhide');
+  }
 }
 function quitEditMusic() {
-  $('.toggle-hide').toggleClass('hide unhide');
-  // save music
+  // ok
+  //$('.toggle-hide').toggleClass('hide unhide');
+
+  // best
+  if ($('.toggle-hide').hasClass('unhide')) {
+    $('.toggle-hide').toggleClass('hide unhide');
+  }
 }
 function getMusic() {
   return $('#taEdit').val();
@@ -130,52 +142,70 @@ function appendToSelect(iType, iName) {
             var iList = glob.json[idx].lists;
             
             //// 1. open edit box
-            //editMusic();
-            //$("#inputType").val(iType); 
-            //$("#inputName").val(iName); 
-            //$("#inputList").val(iList); 
+            editMusic();
+            $("#inputType").val(iType); 
+            $("#inputName").val(iName); 
+            $("#inputList").val(iList); 
 
-            //// 2. on keyup, refresh music
-            //// refresh on change
-            //$('#taEdit').on('keyup input', function () {
-            //  renderMusic()
-            //});
+            glob.music = glob.json[idx].music;
+            glob.musicID = thisID;
+            glob.lists = iList;
+
+            $("#taEdit").val(glob.music); 
+            $('#musicID').text(glob.musicID);
+            renderMusic();
+
+
+            // 2. on keyup, refresh music
+            // refresh on change
+            $('#taEdit').on('keyup input', function () {
+              renderMusic();
+            });
 
             //// 3. on click save, save music
-            //// save
-            //$('#save').on('click', function() {
-            //  var music = getMusic()
-            //  app.printLog("got music")
+            // save
+            $('#save').on('click', function() {
+              var music = getMusic()
+              app.printLog("got music")
 
-            //  var inType = $("#inputType").val()
-            //  var inName = $("#inputName").val()
-            //  var inList = $("#inputList").val()
+              // abcjs_ext check for key sig
+              var m = util.parse(music);
+              var header = m.header;
+              var text = m.text;
+              if (!/K:.*/.test(header)) {
+                music = header.trim() + '\nK:C\n' + text;
+              }
 
-            //  if (inType.trim() == "") {
-            //    throw new Error("No type provided.");
-            //  }
+              var inType = $("#inputType").val()
+              var inName = $("#inputName").val()
+              var inList = $("#inputList").val()
 
-            //  if (inName.trim() == "") {
-            //    throw new Error("No Name provided.");
-            //  }
+              if (inType.trim() == "") {
+                throw new Error("No type provided.");
+              }
 
-            //  if (inList.trim() == "") {
-            //    inList = []
-            //  }
+              if (inName.trim() == "") {
+                throw new Error("No Name provided.");
+              }
 
-            //  glob.json.push({
-            //    "type": inType,
-            //    "name": inName,
-            //    "list": inList,
-            //    "music": music});
+              if (inList.trim() == "") {
+                inList = []
+              }
 
-            //  saveJson(glob.json);
+              glob.json[idx] = {
+                "type": inType,
+                "name": inName,
+                "list": inList,
+                "music": music};
 
-            //  appendToSelect(inType, inName)
+              saveJson(glob.json);
 
-            //  app.printLog("music written")
-            //  quitEditMusic()
-            //}); // end of on click save
+              // TODO: replace instead of append
+              //appendToSelect(inType, inName)
+
+              app.printLog("music written")
+              quitEditMusic()
+            }); // end of on click save
           }
       }, {
           name: 'Delete',
@@ -246,6 +276,15 @@ $('#add').on('click', function () {
   // save
   $('#save').on('click', function() {
     var music = getMusic()
+
+    // abcjs_ext check for key sig
+    var m = util.parse(music);
+    var header = m.header;
+    var text = m.text;
+    if (!/K:.*/.test(header)) {
+      music = header.trim() + '\nK:C\n' + text;
+    }
+
     app.printLog("got music")
 
     var inType = $("#inputType").val()

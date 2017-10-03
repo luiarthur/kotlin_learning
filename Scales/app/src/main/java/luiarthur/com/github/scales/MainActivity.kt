@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         wvScore.webViewClient = WebViewClient() // opens in activity, instead of new window
         wvScore.loadUrl(url)
         wvScore.addJavascriptInterface(WebViewJavaScriptInterface(this), "app");
+        Log.d("HERE", filesDir.toString())
         //wvScore.setWebChromeClient(WebChromeClient());
     }
 

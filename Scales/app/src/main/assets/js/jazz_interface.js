@@ -9,7 +9,7 @@ $('#jazzScales').on('click', function () {
   $('#main-navbar').toggleClass('hide unhide')
 })
 
-function drop(s,n=1) {
+function drop(s,n) {
   return s.substring(0, s.length - n);
 }
 

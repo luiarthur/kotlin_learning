@@ -68,7 +68,7 @@ function clearFields() {
 }
 
 function renderMusic() {
-  var staffWidth = $('#music').width() * 0.7;
+  var staffWidth = Math.round($('nav').width() * .7 * .95);
   var music = '%%staffwidth ' + staffWidth + '\n' + getMusic();
   app.printLog(music);
   ABCJS.renderAbc('music', music);
@@ -119,15 +119,28 @@ function filterMusic(type, name) {
 
 // show Music by type and name
 function showMusic(type, name) {
-  var staffWidth = $('#music').width() * .7;
+  var staffWidth = Math.round($('nav').width() * .7 * .95);
   glob.music = "%%staffwidth " + staffWidth + "\n" + filterMusic(type, name);
   glob.musicID = name + " " + type;
   $('#musicID').text(glob.musicID);
   ABCJS.renderAbc('music', glob.music);
 }
 
-function indexOfItem(jsonObj, iType, iName) {
-  var idx = glob.json.findIndex(function(x) {
+function findIndex(arr, f) {
+  // this does what `arr.findIndex(f)` does on browsers
+  // that do not support `arr.findIndex`
+  var index = -1;
+  for (var i = 0; i < arr.length; ++i) {
+    if (f(arr[i])) {
+      index = i;
+      break;
+    }
+  }
+  return index;
+}
+
+function indexOfItem(arr, iType, iName) {
+  idx = findIndex(arr, function(x) {
     return x.type == iType && x.name == iName;
   });
   return idx;
@@ -145,22 +158,26 @@ function saveMusic() {
     }
     music = music.trim();
 
-    app.printLog("got music")
+    app.printLog("got music");
 
-    var inType = $("#inputType").val()
-    var inName = $("#inputName").val()
-    var inList = $("#inputList").val()
+    var inType = $("#inputType").val().trim();
+    var inName = $("#inputName").val().trim();
+    var inList = $("#inputList").val().trim();
 
-    if (inType.trim() == "") {
-      throw new Error("No type provided.");
+    if (inType == "") {
+      var msg = "No type provided.";
+      app.printLog("Error:" + msg);
+      throw new Error(msg);
     }
 
-    if (inName.trim() == "") {
-      throw new Error("No Name provided.");
+    if (inName == "") {
+      var msg = "No Name:provided.";
+      app.printLog("Error:" + msg);
+      throw new Error(msg);
     }
 
-    if (inList.trim() == "") {
-      inList = []
+    if (inList == "") {
+      inList = [];
     }
 
     var idx = indexOfItem(glob.json, inType, inName);
@@ -169,7 +186,7 @@ function saveMusic() {
       "name": inName,
       "list": inList,
       "music": music};
-
+    
     if (idx == -1) {
       glob.json.push(item);
       appendToSelect(inType, inName)
@@ -194,7 +211,7 @@ function appendToSelect(iType, iName) {
     </li>
   `);
     
-  var thisTag = $("#"+thisID)
+  var thisTag = $("#"+thisID);
 
   var menu = [{
           name: 'Edit',
@@ -204,9 +221,10 @@ function appendToSelect(iType, iName) {
             // TODO
 
             // 0. get index of current item
-            var idx = glob.json.findIndex(function(x) {
-              return x.type == iType && x.name == iName;
-            });
+            //var idx = glob.json.findIndex(function(x) {
+            //  return x.type == iType && x.name == iName;
+            //});
+            var idx = indexOfItem(glob.json, iType, iName);
 
             var iList = glob.json[idx].lists;
             

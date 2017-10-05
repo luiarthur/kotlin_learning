@@ -3,7 +3,11 @@
  *   - abcjs_basic_3.0-min.js
  */
 
-//app.restoreAppDefaults()
+//app.restoreAppDefaults();
+
+$("#reset").on('click', function() {
+  app.restoreAppDefaults();
+})
 
 $('#jazzScales').on('click', function () {
   $('#main-navbar').toggleClass('hide unhide')
@@ -278,6 +282,11 @@ function appendToSelect(iType, iName) {
 
             // TODO: Promp --- ARE YOU SURE YOU WANT TO DELETE?
             saveJson(glob.json);
+
+            if (glob.json.length == 0) {
+              app.printLog("Restoring App Defaults.");
+              app.restoreAppDefaults();
+            }
           }
       }];
    

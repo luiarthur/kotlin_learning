@@ -6,6 +6,8 @@
   {"type": "scale", "name": "longdim6", "list": [],
    "music": "L:1/1\nK:C\nA,B,CDEFG^GABC'"},
   {"type": "lick", "name": "bluesEnding", "list": [],
-   "music": "L:1/1\nK:G\nDEG_BEG"}
+   "music": "L:1/1\nK:G\nDEG_BEG"},
+  {"type": "blurp", "name": "251", "list": [],
+   "music": "L:1/1\nK:C\nV:1\n[FA]|[FA]|[EG]||\nV:2 clef=bass\n[D,C]|[G,B,]|[C,B,]||"}
 ]}
 

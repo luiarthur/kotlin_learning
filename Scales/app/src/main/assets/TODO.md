@@ -6,5 +6,5 @@
 - [ ] Refactor code for cleanliness
 - [ ] Currently, only uppercase ABC is allowed
     - [ ] Eventually, provide support for lowercase ABC
-
+- [ ] Allow transpose down / up octave
 

@@ -5,10 +5,16 @@
 
 //app.restoreAppDefaults();
 
-$("#reset").on('click', function() {
-  app.restoreAppDefaults();
-})
-
+//var titleMenu = [{
+//  name: 'Restore App Defaults',
+//  title: 'restore app defaults',
+//  fun: function () {
+//    app.printLog("Restoring App Defaults.");
+//    app.restoreAppDefaults();
+//  }
+//}];
+//$("#jazzScales").contextMenu(titleMenu, {triggerOn:"click"});
+ 
 $('#jazzScales').on('click', function () {
   $('#main-navbar').toggleClass('hide unhide')
 })

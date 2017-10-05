@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         fun restoreAppDefaults() {
             val file = File(filesDir, internalStorageFilename)
             file.delete()
-            Log.d("HERE", "Deleted the file")
+            Log.d("HERE", "Restore App Default (by deleting internalStorageFile).")
         }
 
         @JavascriptInterface

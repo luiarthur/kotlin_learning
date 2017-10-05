@@ -5,19 +5,25 @@
 
 //app.restoreAppDefaults();
 
-//var titleMenu = [{
-//  name: 'Restore App Defaults',
-//  title: 'restore app defaults',
-//  fun: function () {
-//    app.printLog("Restoring App Defaults.");
-//    app.restoreAppDefaults();
-//  }
-//}];
-//$("#jazzScales").contextMenu(titleMenu, {triggerOn:"click"});
+var titleMenu = [{
+  name: 'Restore App Defaults',
+  title: 'restore button',
+  fun: function () {
+    //app.printLog("Restoring App Defaults.");
+    //app.restoreAppDefaults();
+    //app.reloadPage();
+    app.printLog("Restoring App Defaults (START).");
+    app.restoreAppDefaults();
+    location.reload(true);
+    app.printLog("Restoring App Defaults (DONE).");
+  }
+}];
  
 $('#jazzScales').on('click', function () {
-  $('#main-navbar').toggleClass('hide unhide')
+  $('#main-navbar').toggleClass('hide unhide');
 })
+
+$('#jazzScales').contextMenu(titleMenu, {triggerOn:"contextmenu"});
 
 function drop(s,n) {
   return s.substring(0, s.length - n);
@@ -288,11 +294,6 @@ function appendToSelect(iType, iName) {
 
             // TODO: Promp --- ARE YOU SURE YOU WANT TO DELETE?
             saveJson(glob.json);
-
-            if (glob.json.length == 0) {
-              app.printLog("Restoring App Defaults.");
-              app.restoreAppDefaults();
-            }
           }
       }];
    

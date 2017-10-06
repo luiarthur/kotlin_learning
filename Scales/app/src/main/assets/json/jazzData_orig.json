@@ -7,7 +7,9 @@
    "music": "L:1/1\nK:C\nA,B,CDEFG^GABC'"},
   {"type": "lick", "name": "bluesEnding", "list": [],
    "music": "L:1/1\nK:G\nDEG_BEG"},
+  {"type": "scale", "name": "bebop", "list": [],
+   "music": "L:1/1\nK:C\nCDEFGA_B=BC'"},
   {"type": "blurp", "name": "251", "list": [],
-   "music": "L:1/1\nK:C\nV:1\n[FA]|[FA]|[EG]||\nV:2 clef=bass\n[D,C]|[G,B,]|[C,B,]||"}
+   "music": "L:1/1\nK:C\nV:1\n\"Dm7\"[FA]|\"G7\"[FA]|\"CM7\"[EG]||\nV:2 clef=bass\n[D,C]|[G,B,]|[C,B,]||"}
 ]}
 

@@ -1,9 +1,5 @@
 # TODO
 
-- [ ] When transposing, take caution with chord symbols. 
-    - [ ] chord symbols are in double quotes (e.g. `"Bm7"`)
-    - [ ] make sure not affected by key signature
-    - [ ] make sure symbols aren't attached to `'` or `,` octave markings
 - [ ] Implement 
     - [ ] block chord (only for scales)
     - [ ] circle of 4th / 5th (chords)
@@ -19,3 +15,8 @@
 - [X] Need to implement `delete` and `edit` on selecting music with long click
 - [X] Default to key of C if no key signature is provided
 - [X] Allow transpose down / up octave
+- [X] When transposing, take caution with chord symbols. 
+    - [X] chord symbols are in double quotes (e.g. `"Bm7"`)
+    - [X] make sure not affected by key signature
+    - [X] make sure symbols aren't attached to `'` or `,` octave markings
+

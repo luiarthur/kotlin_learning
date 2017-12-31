@@ -19,7 +19,12 @@ timer{
   }
 }
 
+// val N = 100000
+// val x = timer {Array(N, {it * 2.0 - 1})}
+
 // .kts are kotlin script files.
 // .kt are regular kotlin files.
 // to run as script: 
 // kotilnc -script ParallelExample.kts 8
+
+

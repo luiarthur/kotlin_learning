@@ -12,7 +12,7 @@ fun heavyWork(time: Long=2000) {
 
 val cores = args[0].toInt()
 
-timer{ // EXPLORE
+timer{
   (1..cores).toList().parallelStream().forEach{
     println("Doing heavyWork ${it}.")
     heavyWork()

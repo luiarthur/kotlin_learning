@@ -22,9 +22,11 @@ define("file1", ["require", "exports", "file2"], function (require, exports, F2)
         exports.println(name);
     }
 });
-define("main", ["require", "exports", "file1"], function (require, exports, F1) {
+define("main", ["require", "exports", "file1", "file2"], function (require, exports, F1, F2) {
     "use strict";
     exports.__esModule = true;
+    var x = 1;
     F1.println("Hey there");
     console.log('boo');
+    F1.println(F2.doubleMe(3));
 });

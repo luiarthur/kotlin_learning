@@ -1,6 +1,6 @@
 import * as F2 from "./file2";
 
-export let println = x => console.log(x)
+export let println = (x: any) => console.log(x)
 
 export function f(x: number) {
   let y = x + 1

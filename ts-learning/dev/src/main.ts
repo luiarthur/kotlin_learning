@@ -2,7 +2,7 @@ import * as F1 from "./file1";
 import * as F2 from "./file2";
 
 export function main() {
-  let x = 1
+  let x = 10
 
   F1.println("Hey there")
   console.log('boo')
@@ -11,3 +11,4 @@ export function main() {
 
   return x
 }
+

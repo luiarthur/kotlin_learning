@@ -1,0 +1,13 @@
+{
+  "name": "FirstApp",
+  "version": "1.0.0",
+  "description": "My first app!",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "devDependencies": {
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.4",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
+  }
+}

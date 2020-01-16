@@ -10,7 +10,7 @@ compile:
 	# tsc *.ts --pretty --watch --outDir js/ --module amd
 
 clean:
-	rm -rf js
+	rm -rf js/*.js
 
 serve:
 	python3 -m http.server

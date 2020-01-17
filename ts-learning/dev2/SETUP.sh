@@ -1,6 +1,9 @@
 # Install TS for this project
 npm install typescript --save-dev  # Note that `tsc` is at `node_modules/.bin/tsc`
 
+# Create `package.json`. Tracks version.
+npm init --yes
+
 # Initialize
 # ./node_modules/.bin/tsc --init  # generates `tsconfig.json`
 npx tsc --init # is the same thing. Install npx with `npm install -g npx`

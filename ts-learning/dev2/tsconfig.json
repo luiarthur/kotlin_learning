@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "outFile": "./dist/bundle.js",
+    "noImplicitAny": false,
+    "module": "amd",
+    "target": "es5",
+    "jsx": "react",
+    "noResolve": false,
+    "allowJs": true
+  },
+  "include": [
+    "src/**/*"
+  ]
+}

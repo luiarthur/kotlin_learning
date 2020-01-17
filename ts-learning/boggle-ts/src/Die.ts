@@ -1,6 +1,5 @@
-import * as util from "./util"
-
-export class Die {
+/// < reference path = "util.js" />
+class Die {
   numFaces: number
 
   constructor(public faces: Array<string>) {

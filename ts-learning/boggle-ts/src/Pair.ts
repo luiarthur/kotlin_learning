@@ -1,4 +1,4 @@
-export class Pair {
+class Pair {
   constructor(public x: number, public y: number) {}
 
   plus(that: Pair): Pair {

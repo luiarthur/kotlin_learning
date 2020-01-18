@@ -4,14 +4,11 @@ SHELL := /bin/bash
 
 all: compile
 
-TSVERSION := "Version 3.7.4"
-
-tsversion:
-	@echo $(TSVERSION)
-
 compile:
 	# tsc src/*.ts --pretty --watch --outDir js
-	tsc src/*.ts --pretty --watch --outFile js/boggle.js --module amd
+	# tsc src/*.ts --pretty --watch --outFile js/boggle.js --module amd 
+	npx tsc --watch
+
 
 clean:
 	rm -rf js/*.js

@@ -12,5 +12,6 @@ class Die {
   }
 }
 
+// TODO: remove these
 let die = new Die(['A'])
 console.log(die)

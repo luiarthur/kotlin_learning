@@ -1,43 +1,68 @@
 /// < reference path = "util.js" />
-var Die = /** @class */ (function () {
-    function Die(faces) {
+class Die {
+    constructor(faces) {
         this.faces = faces;
         this.numFaces = faces.length;
     }
-    Die.prototype.roll = function () {
-        var idx = util.getRandomInt(0, this.numFaces);
+    roll() {
+        let idx = util.getRandomInt(0, this.numFaces);
         return this.faces[idx];
-    };
-    return Die;
-}());
-var die = new Die(['A']);
+    }
+}
+// TODO: remove these
+let die = new Die(['A']);
 console.log(die);
-var Matrix = /** @class */ (function () {
-    function Matrix(vec) {
+// import * as React from 'react';
+// import { render } from 'react-dom';
+class Counter extends react.Component {
+    constructor() {
+        super(...arguments);
+        this.state = {
+            count: 0
+        };
+        this.increment = () => {
+            this.setState({
+                count: (this.state.count + 1)
+            });
+        };
+        this.decrement = () => {
+            this.setState({
+                count: (this.state.count - 1)
+            });
+        };
+    }
+    render() {
+        return (react.createElement("div", null,
+            react.createElement("h1", null, this.state.count),
+            react.createElement("button", { onClick: this.increment }, "Increment"),
+            React.createElement("button", { onClick: this.decrement }, "Decrement")));
+    }
+}
+// render(<Counter/>, document.getElementById('root'));
+React.createElement(Counter, null);
+class Matrix {
+    constructor(vec) {
         this.vec = vec;
         this.nrow = this.vec.length;
         this.ncol = this.vec[0].length;
         this.nelem = this.nrow * this.ncol;
-        for (var _i = 0, vec_1 = vec; _i < vec_1.length; _i++) {
-            var v = vec_1[_i];
+        for (let v of vec) {
             // assert(v.length == v[0].length)
         }
     }
-    return Matrix;
-}());
-var Pair = /** @class */ (function () {
-    function Pair(x, y) {
+}
+class Pair {
+    constructor(x, y) {
         this.x = x;
         this.y = y;
     }
-    Pair.prototype.plus = function (that) {
+    plus(that) {
         return new Pair(this.x + that.x, this.y + that.y);
-    };
-    Pair.prototype.equals = function (that) {
+    }
+    equals(that) {
         return (this.x == that.x) && (this.y == that.y);
-    };
-    return Pair;
-}());
+    }
+}
 var util;
 (function (util) {
     //The maximum is exclusive and the minimum is inclusive

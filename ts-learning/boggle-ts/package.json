@@ -1,0 +1,24 @@
+{
+  "name": "boggle-ts",
+  "version": "1.0.0",
+  "description": "Load `js/index.js` into js console via:",
+  "main": "./js/boggle.js",
+  "dependencies": {
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.17",
+    "@types/react-dom": "^16.9.4",
+    "csstype": "^2.6.8",
+    "source-map-loader": "^0.2.4",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.5"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Arthur Lui",
+  "license": "ISC"
+}

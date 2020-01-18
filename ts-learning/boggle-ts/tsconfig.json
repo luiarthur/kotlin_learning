@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "outFile": "./js/boggle.js",
+    "noImplicitAny": false,
+    "module": "amd",
+    "target": "es6",  // won't work with es5.
+    "jsx": "react",
+    "noResolve": false,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowJs": true
+  },
+  "include": [
+    "src/**/*"
+  ]
+}

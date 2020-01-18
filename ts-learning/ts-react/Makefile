@@ -1,17 +1,21 @@
 #!/bin/bash
 
-.PHONY: all bundle clean compile
+.PHONY: all bundle clean compile watch serve
 
 all: bundle
+
+serve:
+	python3 -m http.server
 
 clean:
 	rm -rf dist/*
 
+watch:
+	npx tsc --watch
+
 compile:
 	npx tsc
 
-bundle: compile
-	cd dist && \
-		find . ! -name 'file.txt' -type f -exec rm -f {} + && \
-		rm -rf components
+bundle:
 	npx webpack
+	# npm run dev

@@ -7,7 +7,7 @@ export interface HelloProps {
 
 export function Hello(props: HelloProps) {
   return <h1 className="bla">
-           Hello from {props.compiler} and {props.framework}!
+           Hey from {props.compiler} and {props.framework}!
          </h1>
 }
 
